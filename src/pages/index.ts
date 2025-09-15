@@ -1,4 +1,4 @@
-export * from './dashboard/DashboardPage';
+export * from './home/HomePage';
 export * from './compras/ComprasPage';
 export * from './empleados/EmpleadosPage';
 export * from './gastos/GastosPage';

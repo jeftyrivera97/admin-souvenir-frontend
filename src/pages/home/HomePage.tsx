@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const DashboardPage = () => {
+export const HomePage = () => {
   return (
     <div>Dashboard</div>
   )
