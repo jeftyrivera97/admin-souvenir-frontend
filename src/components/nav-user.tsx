@@ -8,6 +8,8 @@ import {
   IconUserCircle,
 } from "@tabler/icons-react"
 
+
+
 import {
   Avatar,
   AvatarFallback,
@@ -29,6 +31,8 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 
+import { useAuthStore } from "@/auth/hooks/useAuthStore"
+
 export function NavUser({
   user,
 }: {
@@ -39,7 +43,7 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
-
+  const { startLogout } = useAuthStore()
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -86,21 +90,21 @@ export function NavUser({
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <IconUserCircle />
-                Account
+                Cuenta
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <IconCreditCard />
-                Billing
+                Facturacion
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <IconNotification />
-                Notifications
+                Notificaciones
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={startLogout}>
               <IconLogout />
-              Log out
+              Cerrar sesión
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
