@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios, { AxiosHeaders } from "axios"
 
 // Obtener la URL base del backend desde las variables de entorno
 const baseURL = import.meta.env.VITE_API_URL;
@@ -17,15 +17,38 @@ const api = axios.create({
 // Se ejecuta antes de enviar cada petición
 api.interceptors.request.use(
   (config) => {
-    // Obtener token del localStorage
-    const token = localStorage.getItem('token');
-    if (token) {
-      // Añadir token al header Authorization
-      config.headers['Authorization'] = `Bearer ${token}`; 
+    // Obtener token del auth-storage de Zustand
+    let token = null;
+    
+    // Primero intentar obtener del auth-storage (Zustand persist)
+    const authStorage = localStorage.getItem('auth-storage');
+    if (authStorage) {
+      try {
+        const parsedAuth = JSON.parse(authStorage);
+        token = parsedAuth?.state?.token;
+      } catch (e) {
+        console.error('Error al parsear auth-storage:', e);
+      }
     }
+    
+    // Fallback al token directo
+    if (!token) {
+      token = localStorage.getItem('token');
+    }
+    
+    if (token) {
+      // Asegurar que headers existe
+      if (!config.headers) {
+        config.headers = new AxiosHeaders();
+      }
+      // Añadir token al header Authorization
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    
     return config;
   },
   (error) => {
+    console.error('Error en interceptor de request:', error);
     return Promise.reject(error);
   }
 );
@@ -40,10 +63,14 @@ api.interceptors.response.use(
   (error) => {
     // Manejo de errores globales
     if (error.response?.status === 401) {
+      console.log('🔴 Error 401: Token inválido o expirado');
+      
       // Si recibimos un 401 (No autorizado), limpiar el token
       localStorage.removeItem('token');
       localStorage.removeItem('expires');
-      // Opcional: redirigir al login
+      localStorage.removeItem('auth-storage'); // También limpiar Zustand storage
+      
+      // Redirigir al login
       window.location.href = '/auth/login';
     }
     

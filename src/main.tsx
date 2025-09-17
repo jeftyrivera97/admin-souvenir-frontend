@@ -7,6 +7,7 @@ import { LoginPage } from "./auth/index.ts";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 
 import { ComprasPage, IngresoPage, EmpleadosPage, GastosPage, PlanillasPage, ProveedoresPage, VentasPage, HomePage } from "./pages/index.ts";
+import { NewCompraPage } from "./pages/compras/NewCompraPage.tsx";
 
 
 
@@ -30,6 +31,7 @@ createRoot(document.getElementById("root")!).render(
           <Route index element={<HomePage />} />{" "}
           <Route path="dashboard" element={<HomePage />} />  {/* Ruta por defecto "/" */}
           <Route path="compras" element={<ComprasPage />} />
+          <Route path="compras/new" element={<NewCompraPage />} />
           <Route path="gastos" element={<GastosPage />} />
           <Route path="ingresos" element={<IngresoPage />} />
           <Route path="empleados" element={<EmpleadosPage />} />

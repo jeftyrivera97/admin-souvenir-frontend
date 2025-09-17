@@ -1,7 +1,10 @@
-import React from 'react'
+import { ComprasComponent, ComprasIndexTable } from "@/components"
 
 export const ComprasPage = () => {
   return (
-    <div>ComprasPage</div>
+    <>
+    <ComprasComponent />
+    <ComprasIndexTable />
+    </>
   )
 }
