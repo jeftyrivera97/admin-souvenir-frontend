@@ -2,15 +2,21 @@
 
 import * as React from "react";
 import {
-  IconChartBar,
+
   IconDashboard,
-  IconFolder,
+
   IconHelp,
   IconInnerShadowTop,
-  IconListDetails,
+
   IconSearch,
   IconSettings,
   IconUsers,
+  IconShoppingBag,
+  IconPaperBag,
+  IconUserCircle,
+  IconUserCog,
+  IconCash,
+  IconCashBanknote
 } from "@tabler/icons-react";
 
 import { NavMain } from "@/components/nav-main";
@@ -36,22 +42,22 @@ const navMain = [
   {
     title: "Ingresos",
     url: "/ingresos",
-    icon: IconListDetails,
+    icon: IconCash,
   },
   {
-    title: "Ventas",
+    title: "Ventas en Cajas",
     url: "/ventas",
-    icon: IconChartBar,
+    icon: IconCashBanknote,
   },
   {
     title: "Compras",
     url: "/compras",
-    icon: IconFolder,
+    icon: IconShoppingBag,
   },
   {
     title: "Gastos",
     url: "/gastos",
-    icon: IconUsers,
+    icon: IconPaperBag,
   },
   {
     title: "Planillas",
@@ -61,12 +67,12 @@ const navMain = [
   {
     title: "Empleados",
     url: "/empleados",
-    icon: IconUsers,
+    icon: IconUserCircle,
   },
   {
     title: "Proveedores",
     url: "/proveedores",
-    icon: IconUsers,
+    icon: IconUserCog,
   },
 ];
 

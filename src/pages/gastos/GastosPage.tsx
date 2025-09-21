@@ -1,10 +1,10 @@
-import { GastosIndexComponent, GastosIndexTable } from "@/components";
+import { IndexGastosComponent, IndexGastosDataTable } from "@/components";
 
 export const GastosPage = () => {
   return (
     <>
-      <GastosIndexComponent />
-      <GastosIndexTable />
+      <IndexGastosComponent />
+      <IndexGastosDataTable />
     </>
   );
 };

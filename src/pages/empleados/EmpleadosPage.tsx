@@ -1,11 +1,11 @@
-import { IndexEmpleadoComponent, IndexEmpleadoDataTable } from "@/components"
+import { IndexEmpleadosComponent, IndexEmpleadosDataTable } from "@/components"
 
 
 export const EmpleadosPage = () => {
   return (
     <>
-    <IndexEmpleadoComponent />
-    <IndexEmpleadoDataTable />
+    <IndexEmpleadosComponent />
+    <IndexEmpleadosDataTable />
     
     </>
   )
