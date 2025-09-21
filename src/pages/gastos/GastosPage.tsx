@@ -1,7 +1,10 @@
-import React from 'react'
+import { GastosIndexComponent, GastosIndexTable } from "@/components";
 
 export const GastosPage = () => {
   return (
-    <div>GastosPage</div>
-  )
-}
+    <>
+      <GastosIndexComponent />
+      <GastosIndexTable />
+    </>
+  );
+};

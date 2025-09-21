@@ -1,9 +1,9 @@
-export interface CategoriaCompraType {
-    data:       CategoriaCompraData[];
-    pagination: CompraPagination;
+export interface CategoriaGastoType {
+    data:       CategoriaGastoData[];
+    pagination: GastoPagination;
 }
 
-export interface CategoriaCompraData {
+export interface CategoriaGastoData {
     id:          string;
     descripcion: string;
     id_tipo:     string;
@@ -12,10 +12,10 @@ export interface CategoriaCompraData {
     created_at:  string;
     updated_at:  string;
     deleted_at:  null;
-    users:       CompraUsers;
+    users:       GastoUsers;
 }
 
-export interface CompraUsers {
+export interface GastoUsers {
     id:                string;
     name:              string;
     email:             string;
@@ -27,7 +27,7 @@ export interface CompraUsers {
 }
 
 
-export interface CompraPagination {
+export interface GastoPagination {
     page:  number;
     limit: number;
     total: number;

@@ -1,21 +1,23 @@
-export interface CategoriaCompraType {
-    data:       CategoriaCompraData[];
-    pagination: CompraPagination;
+
+export interface CategoriaEmpleadoType {
+    data:       CategoriaEmpleadoData[];
+    pagination: Pagination;
 }
 
-export interface CategoriaCompraData {
+export interface CategoriaEmpleadoData {
     id:          string;
     descripcion: string;
-    id_tipo:     string;
+    rango:       string;
     id_estado:   string;
     id_usuario:  string;
     created_at:  string;
     updated_at:  string;
     deleted_at:  null;
-    users:       CompraUsers;
+    users:       Users;
 }
 
-export interface CompraUsers {
+
+export interface Users {
     id:                string;
     name:              string;
     email:             string;
@@ -27,7 +29,7 @@ export interface CompraUsers {
 }
 
 
-export interface CompraPagination {
+export interface Pagination {
     page:  number;
     limit: number;
     total: number;

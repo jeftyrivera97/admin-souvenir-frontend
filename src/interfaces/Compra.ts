@@ -25,10 +25,10 @@ export interface CompraData {
     updated_at:          null;
     deleted_at:          null;
     categorias_compras:  CategoriasCompras;
-    proveedores:         Proveedores;
+    proveedores:         ComprasProveedores;
     tipos_operaciones:   CategoriasCompras;
-    estados_operaciones: EstadosOperaciones;
-    users:               Users;
+    estados_operaciones: ComprasEstadosOperaciones;
+    users:               CompraUsers;
 }
 
 export interface CategoriasCompras {
@@ -42,13 +42,13 @@ export interface CategoriasCompras {
     deleted_at:  null;
 }
 
-export interface EstadosOperaciones {
+export interface ComprasEstadosOperaciones {
     id:          string;
     descripcion: string;
     deleted_at:  null;
 }
 
-export interface Proveedores {
+export interface ComprasProveedores {
     id:               string;
     codigo_proveedor: string;
     descripcion:      string;
@@ -62,7 +62,7 @@ export interface Proveedores {
     deleted_at:       null;
 }
 
-export interface Users {
+export interface CompraUsers {
     id:                string;
     name:              string;
     email:             string;

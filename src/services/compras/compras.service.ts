@@ -61,15 +61,13 @@ export class ComprasService {
   /**
    * Obtener una compra específica por ID
    */
-  static getCompraById = async (id: string | number): Promise<CompraType> => {
+  static getCompraById = async (id: string | number): Promise<{ data: CompraData }> => {
     try {
       console.log(`🆔 Obteniendo compra por ID: ${id}`);
 
-      const response = await api.get<CompraType>(`/compras`, {
-        params: { search: id },
-      });
+      const response = await api.get<{ data: CompraData }>(`/compras/${id}`);
 
-      console.log("✅ Compra obtenida:", response.data.data.length, "resultados");
+      console.log("✅ Compra obtenida:", response.data);
       return response.data;
     } catch (error) {
       console.error("❌ Error al obtener compra por ID:", error);

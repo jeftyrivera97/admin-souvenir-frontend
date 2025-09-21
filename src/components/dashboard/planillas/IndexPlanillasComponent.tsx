@@ -4,7 +4,7 @@ import { NewItemButton } from "../shared/NewItemButton";
 
 
 
-export const ComprasComponent = () => {
+export const IndexPlanillasComponent = () => {
 
   return (
     <>
@@ -15,8 +15,8 @@ export const ComprasComponent = () => {
         <div></div>
         <div></div>
         <div>
-          <Link to="/compras/new">
-            <NewItemButton placeholder="Nueva Compra" />
+          <Link to="/planillas/new">
+            <NewItemButton placeholder="Nuevo Pago de Planilla" />
           </Link>
         </div>
       </div>
@@ -24,4 +24,4 @@ export const ComprasComponent = () => {
   );
 };
 
-export default ComprasComponent;
+export default IndexPlanillasComponent;

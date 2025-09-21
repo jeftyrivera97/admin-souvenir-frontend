@@ -30,16 +30,20 @@ import {
 import { useEffect, useState } from "react";
 import type { ProveedorData } from "@/interfaces/Proveedor";
 import type { CategoriaCompraData } from "@/interfaces/CategoriaCompra";
-import { tiposOperacionesService } from "@/services/tipos-operaciones/tiposOperaciones.service";
 import type { TipoOperacionData } from "@/interfaces/TipoOperacion";
+import { tiposOperacionesService } from "@/services/tipos-operaciones/tiposOperaciones.service";
 
-export function NewCompraForm() {
+interface EditCompraFormProps {
+  compraId: string;
+}
+
+export function EditCompraForm({ compraId }: EditCompraFormProps) {
   const initialFormData = {
     codigo_compra: "",
     fecha: "",
     id_categoria: "",
     id_proveedor: "",
-    id_tipo_operacion: "",
+    id_tipo_operacion: "", // ✅ Cambiar de id_tipo_pago a id_tipo_operacion
     fecha_pago: "",
     gravado15: 0,
     gravado18: 0,
@@ -69,26 +73,58 @@ export function NewCompraForm() {
   };
 
   useEffect(() => {
-    const loadProveedores = async () => {
+    const loadData = async () => {
       try {
-        const proveedoresData = await ProveedoresService.getProveedores(1, 100);
+        // Cargar datos básicos (proveedores, tipos operaciones y categorías)
+        const [proveedoresData, categoriasData, tiposOperacionesData ] = await Promise.all([
+          ProveedoresService.getProveedores(1, 100),
+          CategoriasComprasService.getCategoriasCompras(1, 100),
+          tiposOperacionesService.getTiposOperaciones(),
+        ]);
+        
         setProveedores(proveedoresData.data);
-
-        const tiposOperacionesData = await tiposOperacionesService.getTiposOperaciones();
+        setCategorias(categoriasData.data);
         setTiposOperaciones(tiposOperacionesData.data);
 
-        const categoriasData =
-          await CategoriasComprasService.getCategoriasCompras(1, 100);
-        setCategorias(categoriasData.data);
+        // Cargar datos de la compra específica
+        const compraData = await ComprasService.getCompraById(compraId);
+        console.log("📋 Datos de la compra cargada:", compraData);
+        
+        // Poblar el formulario con los datos de la compra
+        if (compraData.data) {
+          const compra = compraData.data; // ✅ Ahora es un objeto directo, no un array
+          console.log("📝 Datos de la compra:", compra);
+          console.log("🔍 id_tipo_operacion de la compra:", compra.id_tipo_operacion);
+          
+          setFormData({
+            codigo_compra: compra.codigo_compra || "",
+            fecha: compra.fecha ? compra.fecha.split('T')[0] : "", // Convertir ISO a YYYY-MM-DD
+            id_categoria: compra.id_categoria || "",
+            id_proveedor: compra.id_proveedor || "",
+            id_tipo_operacion: compra.id_tipo_operacion || "", // ✅ Mapeo directo sin cambio de nombre
+            fecha_pago: compra.fecha_pago ? compra.fecha_pago.split('T')[0] : "",
+            gravado15: compra.gravado15 || 0,
+            gravado18: compra.gravado18 || 0,
+            impuesto15: compra.impuesto15 || 0,
+            impuesto18: compra.impuesto18 || 0,
+            exento: compra.exento || 0,
+            exonerado: compra.exonerado || 0,
+            total: compra.total?.toString() || "",
+          });
+        } else {
+          console.warn("⚠️ No se encontraron datos de la compra");
+        }
+        
       } catch (error) {
-        console.error("Error al cargar la informacion del backend:", error);
+        console.error("Error al cargar los datos:", error);
+        toast.error("Error al cargar los datos de la compra");
       } finally {
         setLoading(false);
       }
     };
 
-    loadProveedores();
-  }, []);
+    loadData();
+  }, [compraId]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -101,23 +137,25 @@ export function NewCompraForm() {
         fecha: `${formData.fecha}T00:00:00.000Z`,
         id_categoria: formData.id_categoria,
         id_proveedor: formData.id_proveedor,
-        id_tipo_operacion: formData.id_tipo_operacion,
-        fecha_pago: `${formData.fecha_pago}T00:00:00.000Z`, //
+        id_tipo_operacion: formData.id_tipo_operacion, // ✅ Mapeo directo
+        fecha_pago: `${formData.fecha_pago}T00:00:00.000Z`,
         gravado15: Number(formData.gravado15) || 0,
         gravado18: Number(formData.gravado18) || 0,
         impuesto15: Number(formData.impuesto15) || 0,
         impuesto18: Number(formData.impuesto18) || 0,
         exento: Number(formData.exento) || 0,
-        exonerado: Number(formData.exonerado) || 0, //
+        exonerado: Number(formData.exonerado) || 0,
         total: Number(formData.total) || 0,
       };
-      console.log(" Datos mapeados para el backend:", compraData);
-      const nuevaCompra = await ComprasService.createCompra(compraData);
-      console.log("✅ Compra creada:", nuevaCompra);
-      toast.success("Compra creada exitosamente!");
-      setFormData(initialFormData);
+      console.log("🔄 Datos mapeados para actualizar:", compraData);
+      
+      // Actualizar en lugar de crear
+      const compraActualizada = await ComprasService.updateCompra(compraId, compraData);
+      console.log("✅ Compra actualizada:", compraActualizada);
+      toast.success("Compra actualizada exitosamente!");
+      
     } catch (error: unknown) {
-      console.error("❌ Error al crear compra:", error);
+      console.error("❌ Error al actualizar compra:", error);
       if (error && typeof error === "object" && "response" in error) {
         const axiosError = error as {
           response: { status: number; statusText: string; data: unknown };
@@ -129,7 +167,7 @@ export function NewCompraForm() {
         });
       }
       toast.error(
-        "Error al crear la compra. Revisa la consola para más detalles."
+        "Error al actualizar la compra. Revisa la consola para más detalles."
       );
     } finally {
       setSubmitting(false);
@@ -140,7 +178,7 @@ export function NewCompraForm() {
 
   if (loading) {
     return (
-      <div className="flex justify-center p-8">Cargando proveedores...</div>
+      <div className="flex justify-center p-8">Cargando datos de la compra...</div>
     );
   }
 
@@ -152,9 +190,9 @@ export function NewCompraForm() {
       <form onSubmit={handleSubmit}>
         <Card className="w-full max-w-4xl">
           <CardHeader>
-            <CardTitle>Crear nueva compra</CardTitle>
+            <CardTitle>Editar compra</CardTitle>
             <CardDescription>
-              Ingresa los detalles de la nueva compra a continuación
+              Modifica los detalles de la compra seleccionada
             </CardDescription>
             <CardAction>
               <BackButton url="/compras" />
@@ -237,7 +275,7 @@ export function NewCompraForm() {
                 </Select>
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="id_tipo_operacion">Tipo de Pago</Label>
+                <Label htmlFor="id_tipo_operacion">Tipo de Operación</Label>
                 <Select
                   name="id_tipo_operacion"
                   value={formData.id_tipo_operacion}
@@ -247,17 +285,16 @@ export function NewCompraForm() {
                   required
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Seleccione un tipo de pago" />
+                    <SelectValue placeholder="Seleccione un tipo de operación" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectLabel>Tipos de Pago</SelectLabel>
-                      {tiposOperaciones.map((tipo) => (
-                        <SelectItem key={tipo.id} value={tipo.id}>
-                          {tipo.descripcion}
-                        </SelectItem>
-                      ))}
-                    
+                      <SelectLabel>Tipos de Operación</SelectLabel>
+                        {tiposOperaciones.map((tipo) => (
+                          <SelectItem key={tipo.id} value={tipo.id}>
+                            {tipo.descripcion}
+                          </SelectItem>
+                        ))}
                     </SelectGroup>
                   </SelectContent>
                 </Select>
@@ -358,7 +395,7 @@ export function NewCompraForm() {
           <CardFooter className="flex-col gap-2">
             <Button type="submit" className="w-full" disabled={submitting}>
               <Save className="mr-2 h-4 w-4" />
-              {submitting ? "Creando..." : "Crear Compra"}
+              {submitting ? "Actualizando..." : "Actualizar Compra"}
             </Button>
           </CardFooter>
         </Card>

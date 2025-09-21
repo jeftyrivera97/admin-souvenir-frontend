@@ -1,7 +1,12 @@
-import React from 'react'
+import { IndexEmpleadoComponent, IndexEmpleadoDataTable } from "@/components"
+
 
 export const EmpleadosPage = () => {
   return (
-    <div>EmpleadosPage</div>
+    <>
+    <IndexEmpleadoComponent />
+    <IndexEmpleadoDataTable />
+    
+    </>
   )
 }

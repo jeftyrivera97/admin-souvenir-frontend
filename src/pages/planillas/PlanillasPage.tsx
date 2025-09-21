@@ -1,7 +1,11 @@
-import React from 'react'
+import { PllanillasIndexComponent, PlanillasIndexTable } from "@/components";
 
 export const PlanillasPage = () => {
   return (
-    <div>PlanillasPage</div>
-  )
-}
+    <>
+   
+      <PllanillasIndexComponent />
+      <PlanillasIndexTable />
+    </>
+  );
+};

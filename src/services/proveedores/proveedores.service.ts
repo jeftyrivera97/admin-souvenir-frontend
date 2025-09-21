@@ -61,15 +61,13 @@ export class ProveedoresService {
   /**
    * Obtener un proveedor específico por ID
    */
-  static getProveedorById = async (id: string | number): Promise<ProveedorType> => {
+  static getProveedorById = async (id: string | number): Promise<{ data: ProveedorData }> => {
     try {
       console.log(`🆔 Obteniendo proveedor por ID: ${id}`);
 
-      const response = await api.get<ProveedorType>(`/proveedores`, {
-        params: { search: id },
-      });
+      const response = await api.get<{ data: ProveedorData }>(`/proveedores/${id}`);
 
-      console.log("✅ Proveedor obtenido:", response.data.data.length, "resultados");
+      console.log("✅ Proveedor obtenido:", response.data);
       return response.data;
     } catch (error) {
       console.error("❌ Error al obtener proveedor por ID:", error);

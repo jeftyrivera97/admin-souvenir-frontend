@@ -29,7 +29,7 @@ export const SearchItemInput = ({ placeholder, onSearch, loading = false }: Sear
   return (
     <form onSubmit={handleSubmit} className="grid w-full max-w-sm items-center gap-3">
       <Label htmlFor="search" className="flex items-center">
-        Buscador cd <Search className="ml-2 h-4 w-4" />
+        Buscador <Search className="ml-2 h-4 w-4" />
       </Label>
       <div className="flex gap-2">
         <Input 

@@ -11,20 +11,21 @@ import {
 
 import { useEffect, useState } from "react";
 import type {
-  CompraData,
+  GastoData,
   Pagination as PaginationType,
-} from "@/interfaces/Compra";
+} from "@/interfaces/Gasto";
 import { PaginationComponent } from "../shared/PaginationComponent";
 import { SearchItemInput } from "../shared/SearchItemInput";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import { PopcornIcon } from "lucide-react";
 import { Alert, AlertTitle } from "@/components/ui/alert";
-import { ComprasService } from "@/services/compras/compras.service";
-import { comprasColumnas } from "@/helpers/dashboard/shared/getColumns";
+import { GastosService } from "@/services/gastos/gastos.service";
+import { gastosColumnas } from "@/helpers/dashboard/shared/getColumns";
+import { Link } from "react-router-dom";
 
-export function ComprasIndexTable() {
-  const [compras, setCompras] = useState<CompraData[]>([]);
+export function IndexGastosDataTable() {
+  const [gastos, setGastos] = useState<GastoData[]>([]);
   const [pagination, setPagination] = useState<PaginationType>({
     page: 1,
     limit: 10,
@@ -37,23 +38,26 @@ export function ComprasIndexTable() {
   const [searchLoading, setSearchLoading] = useState(false);
 
   useEffect(() => {
-    // Solo cargar todas las compras si no estamos en modo búsqueda
+    // Solo cargar todas las gastos si no estamos en modo búsqueda
     if (!searchMode) {
-      const fetchCompras = async () => {
+      const fetchGastos = async () => {
         try {
           setLoading(true);
           //  USANDO SERVICIO
-          const response = await ComprasService.getCompras(pagination.page, pagination.limit);
-          setCompras(response.data);
+          const response = await GastosService.getGastos(
+            pagination.page,
+            pagination.limit
+          );
+          setGastos(response.data);
           setPagination(response.pagination);
         } catch (err) {
-          console.error("Error al cargar compras:", err);
-          setError("Error al cargar las compras");
+          console.error("Error al cargar gastos:", err);
+          setError("Error al cargar las gastos");
         } finally {
           setLoading(false);
         }
       };
-      fetchCompras();
+      fetchGastos();
     }
   }, [pagination.page, pagination.limit, searchMode]);
 
@@ -76,12 +80,12 @@ export function ComprasIndexTable() {
       setSearchLoading(true);
       setError(null);
 
-      // ✅ USANDO NUEVO SERVICIO - Realizar búsqueda usando ComprasService
+      // ✅ USANDO NUEVO SERVICIO - Realizar búsqueda usando GastosService
       console.log("🔍 Realizando búsqueda:", searchTerm);
-      const response = await ComprasService.searchCompras(searchTerm, 1, 50); // Máximo 50 resultados
+      const response = await GastosService.searchGastos(searchTerm, 1, 50); // Máximo 50 resultados
 
       // Mostrar los resultados de la búsqueda
-      setCompras(response.data);
+      setGastos(response.data);
       setSearchMode(true);
 
       // Actualizar paginación con los datos de la respuesta
@@ -92,15 +96,15 @@ export function ComprasIndexTable() {
         pages: response.pagination.pages,
       });
 
-      // Búsqueda general por código de compra usando getCompraBySearch
+      // Búsqueda general por código de gasto usando getGastoBySearch
     } catch (err) {
       console.error("Error en búsqueda:", err);
       if (err instanceof Error && err.message.includes("404")) {
-        setError("No se encontraron compras que coincidan con la búsqueda");
+        setError("No se encontraron gastos que coincidan con la búsqueda");
       } else {
         setError("Error al realizar la búsqueda");
       }
-      setCompras([]);
+      setGastos([]);
     } finally {
       setSearchLoading(false);
     }
@@ -110,7 +114,7 @@ export function ComprasIndexTable() {
     setSearchMode(false);
     setError(null);
     setPagination((prev) => ({ ...prev, page: 1 }));
-    // El useEffect se ejecutará automáticamente y cargará todas las compras
+    // El useEffect se ejecutará automáticamente y cargará todas las gastos
   };
 
   if (loading) {
@@ -135,9 +139,13 @@ export function ComprasIndexTable() {
           loading={searchLoading}
         />
         {searchMode && (
-          <Button onClick={handleClearSearch} variant="outline" size="sm" className="mt-6">
+          <Button
+            onClick={handleClearSearch}
+            variant="outline"
+            size="sm"
+            className="mt-6"
+          >
             <X />
-         
           </Button>
         )}
       </div>
@@ -153,58 +161,53 @@ export function ComprasIndexTable() {
       )}
 
       <Table>
-        <TableCaption>Lista de compras recientes</TableCaption>
+        <TableCaption>Lista de gastos recientes</TableCaption>
         <TableHeader>
           <TableRow>
-            {comprasColumnas.map((columna) => (
+            {gastosColumnas.map((columna) => (
               <TableHead key={columna}>{columna}</TableHead>
             ))}
           </TableRow>
         </TableHeader>
         <TableBody>
-          {compras.length > 0 ? (
-            compras.map((compra) => (
-              <TableRow key={compra.id}>
+          {gastos.length > 0 ? (
+            gastos.map((gasto) => (
+              <TableRow key={gasto.id}>
                 <TableCell className="font-medium">
-                  {compra.codigo_compra}
+                  {gasto.codigo_gasto}
                 </TableCell>
-                <TableCell>{compra.fecha}</TableCell>
+                <TableCell>{gasto.fecha}</TableCell>
+
                 <TableCell>
-                  {compra.proveedores?.descripcion || compra.id_proveedor}
+                  {gasto.categorias_gastos?.descripcion || ""}
                 </TableCell>
+
+                <TableCell>L.{gasto.total.toFixed(2)}</TableCell>
+
                 <TableCell>
-                  {compra.categorias_compras?.descripcion || ""}
+                  <Button variant={"destructive"}>
+                    <Link to={`/gastos/${gasto.id}/edit`}>Editar</Link>
+                  </Button>
                 </TableCell>
-                <TableCell>{compra.tipos_operaciones.descripcion}</TableCell>
-                <TableCell>{compra.fecha_pago}</TableCell>
-                
-                <TableCell>L.{compra.total.toFixed(2)}</TableCell>
-                <TableCell>
-                  {compra.estados_operaciones?.descripcion || "Pendiente"}
-                </TableCell>
-                <TableCell><Button variant={"destructive"}>Editar</Button></TableCell>
-                
               </TableRow>
             ))
           ) : (
             <TableRow>
               <TableCell
-                colSpan={comprasColumnas.length}
+                colSpan={gastosColumnas.length}
                 className="text-center text-gray-500"
               >
-                No hay compras disponibles
+                No hay gastos disponibles
               </TableCell>
             </TableRow>
           )}
         </TableBody>
         <TableFooter>
           <TableRow>
-            <TableCell colSpan={comprasColumnas.length - 1}>Total</TableCell>
+            <TableCell colSpan={gastosColumnas.length - 1}>Total</TableCell>
             <TableCell className="text-right">
               L.
-              {compras
-                .reduce((sum, compra) => sum + compra.total, 0)
-                .toFixed(2)}
+              {gastos.reduce((sum, gasto) => sum + gasto.total, 0).toFixed(2)}
             </TableCell>
           </TableRow>
         </TableFooter>

@@ -1,5 +1,5 @@
 import api from "@/api/api";
-import type { CategoriaCompraType } from "@/interfaces/CategoriaCompra";
+import type { CategoriaCompraType, CategoriaCompraData } from "@/interfaces/CategoriaCompra";
 
 
 
@@ -61,17 +61,15 @@ export class CategoriasComprasService {
   };
 
   /**
-   * Obtener un proveedor específico por ID
+   * Obtener una categoría de compra específica por ID
    */
-  static getCategoriaCompraById = async (id: string | number): Promise<CategoriaCompraType> => {
+  static getCategoriaCompraById = async (id: string | number): Promise<{ data: CategoriaCompraData }> => {
     try {
       console.log(`🆔 Obteniendo categoría de compra por ID: ${id}`);
 
-      const response = await api.get<CategoriaCompraType>(`/categorias/compras`, {
-        params: { search: id },
-      });
+      const response = await api.get<{ data: CategoriaCompraData }>(`/categorias/compras/${id}`);
 
-      console.log("✅ Categoría de compra obtenida:", response.data.data.length, "resultados");
+      console.log("✅ Categoría de compra obtenida:", response.data);
       return response.data;
     } catch (error) {
       console.error("❌ Error al obtener categoría de compra por ID:", error);
