@@ -6,7 +6,7 @@ import App from "./App.tsx";
 import { LoginPage } from "./auth/index.ts";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 
-import { ComprasPage, IngresoPage, EmpleadosPage, GastosPage, PlanillasPage, ProveedoresPage, VentasPage, HomePage, NewGastoPage, EditGastoPage, NewCompraPage, EditCompraPage, NewPlanillaPage, EditPlanillaPage, NewEmpleadoPage, EditEmpleadoPage } from "./pages/index.ts";
+import { ComprasPage, IngresosPage, NewIngresoPage, EditIngresoPage, EmpleadosPage, GastosPage, PlanillasPage, ProveedoresPage, HomePage, NewGastoPage, EditGastoPage, NewCompraPage, EditCompraPage, NewPlanillaPage, EditPlanillaPage, NewEmpleadoPage, EditEmpleadoPage, NewProveedorPage, EditProveedorPage } from "./pages/index.ts";
 
 
 
@@ -45,7 +45,9 @@ createRoot(document.getElementById("root")!).render(
           <Route path="planillas/:id/edit" element={<EditPlanillaPage />} />
 
 
-          <Route path="ingresos" element={<IngresoPage />} />
+          <Route path="ingresos" element={<IngresosPage />} />
+          <Route path="ingresos/new" element={<NewIngresoPage />} />
+          <Route path="ingresos/:id/edit" element={<EditIngresoPage />} />
 
 
           <Route path="empleados" element={<EmpleadosPage />} />
@@ -53,7 +55,10 @@ createRoot(document.getElementById("root")!).render(
           <Route path="empleados/:id/edit" element={<EditEmpleadoPage />} />
          
           <Route path="proveedores" element={<ProveedoresPage />} />
-          <Route path="ventas" element={<VentasPage />} />
+          <Route path="proveedores/new" element={<NewProveedorPage />} />
+          <Route path="proveedores/:id/edit" element={<EditProveedorPage />} />
+
+     
           {/* Las otras rutas */}
         
         </Route>

@@ -10,10 +10,11 @@ export interface ProveedorData {
     categoria:        string;
     contacto:         string;
     telefono:         string;
+    correo:           string;
     id_estado:        string;
     id_usuario:       string;
-    created_at:       string | null;
-    updated_at:       string | null;
+    created_at:       string;
+    updated_at:       string;
     deleted_at:       null;
     estados:          ProveedorEstados;
 }
@@ -23,7 +24,6 @@ export interface ProveedorEstados {
     descripcion: string;
     deleted_at:  null;
 }
-
 
 export interface Pagination {
     page:  number;

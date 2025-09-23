@@ -16,7 +16,6 @@ import {
   IconUserCircle,
   IconUserCog,
   IconCash,
-  IconCashBanknote
 } from "@tabler/icons-react";
 
 import { NavMain } from "@/components/nav-main";
@@ -32,6 +31,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { useAuth } from "@/store/auth";
+import { Link } from 'react-router-dom';
 
 const navMain = [
   {
@@ -43,11 +43,6 @@ const navMain = [
     title: "Ingresos",
     url: "/ingresos",
     icon: IconCash,
-  },
-  {
-    title: "Ventas en Cajas",
-    url: "/ventas",
-    icon: IconCashBanknote,
   },
   {
     title: "Compras",
@@ -113,12 +108,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <a href="#">
+              
+              <Link to="/">
                 <IconInnerShadowTop className="!size-5" />
                 <span className="text-base font-semibold">
                   El Buen Amigo Souvenir
                 </span>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

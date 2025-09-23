@@ -1,7 +1,9 @@
-import React from 'react'
+import { IndexHomePageComponent } from "@/components"
+
+
 
 export const HomePage = () => {
   return (
-    <div>Dashboard</div>
+    <><IndexHomePageComponent /></>
   )
 }

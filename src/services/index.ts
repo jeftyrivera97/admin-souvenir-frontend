@@ -4,17 +4,20 @@ export * from './categorias-compras/categoriasCompras.service';
 
 export * from './proveedores/proveedores.service';
 
-
 export * from './gastos/gastos.service';
-
 export * from './categorias-gastos/categoriasGastos.service';
-export * from './categorias-planillas/categoriasPlanillas.service';
 
-export * from './empleados/empleados.service';
+export * from './categorias-planillas/categoriasPlanillas.service';
 
 export * from './empleados/empleados.service';
 export * from './areas-empleados/areasEmpleados.service';
 export * from './categorias-empleados/categoriasEmpleados.service';
+
+export * from './ingresos/ingresos.service';
+export * from './categorias-ingresos/categoriasIngresos.service';
+
+export * from './ventas/ventas.service';
+
 
 // Re-exportar funciones legacy de helpers para compatibilidad
 export * from '../helpers';

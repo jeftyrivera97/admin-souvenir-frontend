@@ -19,6 +19,15 @@ export const gastosColumnas = [
   "Acciones",
 ];
 
+export const ingresosColumnas = [
+  "Codigo Ingreso",
+  "Fecha",
+  "Descripcion",
+  "Categoría",
+  "Total",
+  "Acciones",
+];
+
 export const planillasColumnas = [
   "Codigo Planilla",
   "Fecha",
@@ -35,5 +44,15 @@ export const empleadosColumnas = [
   "Area",
   "Categoría",
   "Telefono",
+  "Acciones",
+];
+
+export const proveedoresColumnas = [
+  "Codigo Proveedor",
+  "Descripcion",
+  "Categoria",
+  "Contacto",
+  "Telefono",
+  "Correo Electronico",
   "Acciones",
 ];

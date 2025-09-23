@@ -1,7 +1,11 @@
-import React from 'react'
+import { IndexProveedoresComponent, IndexProveedoresDataTable } from "@/components";
 
 export const ProveedoresPage = () => {
   return (
-    <div>ProveedoresPage</div>
-  )
-}
+    <>
+   
+      <IndexProveedoresComponent />
+      <IndexProveedoresDataTable />
+    </>
+  );
+};

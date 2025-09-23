@@ -1,7 +1,10 @@
-import React from 'react'
+import { IndexIngresosComponent, IndexIngresosDataTable } from "@/components";
 
-export const IngresoPage = () => {
+export const IngresosPage = () => {
   return (
-    <div>IngresoPage</div>
-  )
-}
+    <>
+      <IndexIngresosComponent />
+      <IndexIngresosDataTable />
+    </>
+  );
+};
