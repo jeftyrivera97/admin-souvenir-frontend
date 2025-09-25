@@ -1,32 +1,29 @@
-# Usa Node.js 18 como imagen base
-FROM node:18-alpine
-
-# Establece el directorio de trabajo
+# ---------- Build ----------
+FROM node:20-alpine AS build
 WORKDIR /app
 
-# Copia package.json y package-lock.json (si existe)
+# Instala deps (incluye devDependencies para poder compilar)
 COPY package*.json ./
+RUN npm ci
 
-# Instala las dependencias
-RUN npm ci --only=production
-
-# Copia el resto de los archivos del proyecto
+# Copia el código y compila a /dist
 COPY . .
-
-# Construye la aplicación para producción
+# Si necesitas variables de build, expórtalas como VITE_* en Dokploy
+# (p.ej. VITE_API_URL)
 RUN npm run build
 
-# Usa nginx para servir los archivos estáticos
-FROM nginx:alpine
+# ---------- Runtime ----------
+FROM nginx:1.27-alpine
 
-# Copia los archivos construidos al directorio de nginx
-COPY --from=0 /app/dist /usr/share/nginx/html
-
-# Copia la configuración personalizada de nginx (opcional)
+# Elimina el default y coloca tu conf
+RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Expone el puerto 80
+# Copia el build de Vite
+COPY --from=build /app/dist /usr/share/nginx/html
+
+# Puerto que expone Nginx
 EXPOSE 80
 
-# Comando para iniciar nginx
+# Mantén Nginx en foreground
 CMD ["nginx", "-g", "daemon off;"]
