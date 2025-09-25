@@ -6,3 +6,5 @@ Dockerfile
 docker-compose.yml
 .vscode
 .DS_Store
+.env
+.env.local

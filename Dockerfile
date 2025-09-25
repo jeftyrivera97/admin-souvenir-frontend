@@ -1,45 +1,17 @@
-# ---- Build Stage ----
+# ---- Build (Vite) ----
 FROM node:20-alpine AS build
-
-# Configurar directorio de trabajo
 WORKDIR /app
-
-# Instalar dependencias primero (para mejor caching)
 COPY package*.json ./
-RUN npm ci --only=production
-
-# Copiar código fuente
+RUN npm ci
 COPY . .
+RUN npm run build  # genera /app/dist
 
-# Configurar variable de entorno para el build
-ENV VITE_API_URL=https://api.elbuenamigosouvenir.site/api/
-
-# Ejecutar build con debugging
-RUN echo "🔧 Iniciando build..." && \
-    npm run build && \
-    echo "✅ Build completado, verificando archivos:" && \
-    ls -la dist/ && \
-    echo "📄 Contenido de dist/:" && \
-    find dist/ -type f -name "*.html" -o -name "*.js" -o -name "*.css"
-
-# ---- Runtime Stage ----
-FROM caddy:2-alpine
-
-# Copiar configuración de Caddy
-COPY Caddyfile /etc/caddy/Caddyfile
-
-# Copiar archivos del build
-COPY --from=build /app/dist /usr/share/caddy
-
-# Verificar que los archivos están en su lugar
-RUN echo "🔍 Verificando archivos copiados:" && \
-    ls -la /usr/share/caddy/ && \
-    echo "📁 Contenido completo:" && \
-    find /usr/share/caddy -type f
-
-# Exponer puerto
+# ---- Runtime (Nginx) ----
+FROM nginx:1.27-alpine
+# Sustituye el default y coloca tu conf
+RUN rm /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Copia el build de Vite a la carpeta pública
+COPY --from=build /app/dist /usr/share/nginx/html
 EXPOSE 80
-
-# Healthcheck
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost/healthz || exit 1
+CMD ["nginx", "-g", "daemon off;"]
