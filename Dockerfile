@@ -4,6 +4,10 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
+
+# Configurar la URL del backend para el build
+ENV VITE_API_URL=https://api.elbuenamigosouvenir.site/api/
+
 RUN npm run build
 
 # ---- Runtime ----
