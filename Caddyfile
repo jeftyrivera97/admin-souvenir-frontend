@@ -1,0 +1,23 @@
+{
+  auto_https off
+}
+
+:80 {
+  root * /usr/share/caddy
+  try_files {path} /index.html
+  file_server
+
+  # Healthcheck
+  @health path /healthz
+  respond @health 200
+
+  # Seguridad
+  header {
+    X-Frame-Options "SAMEORIGIN"
+    X-Content-Type-Options "nosniff"
+    Referrer-Policy "no-referrer-when-downgrade"
+    Content-Security-Policy "default-src 'self' http: https: ws: wss: data: blob 'unsafe-inline'; frame-ancestors 'self';"
+  }
+
+  encode gzip
+}
