@@ -1,6 +1,12 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+// 🔍 DEBUG: Verificar variables de entorno
+console.log('🔍 Debug - Variables de entorno:');
+console.log('VITE_API_URL:', import.meta.env.VITE_API_URL);
+console.log('MODE:', import.meta.env.MODE);
+console.log('Todas las variables VITE:', Object.keys(import.meta.env).filter(key => key.startsWith('VITE')));
 import "./index.css";
 import App from "./App.tsx";
 import { LoginPage } from "./auth/index.ts";

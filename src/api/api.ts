@@ -3,6 +3,10 @@ import axios, { AxiosHeaders } from "axios"
 // Obtener la URL base del backend desde las variables de entorno
 const baseURL = import.meta.env.VITE_API_URL;
 
+// 🔍 DEBUG: Verificar qué URL está usando
+console.log('🔍 API Debug - baseURL configurada:', baseURL);
+console.log('🔍 API Debug - Mode:', import.meta.env.MODE);
+
 // Crear instancia de axios con configuración personalizada
 const api = axios.create({
     baseURL: baseURL, // URL del backend desde .env
