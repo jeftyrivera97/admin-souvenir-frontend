@@ -6,13 +6,13 @@ import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
 // Definición de tipos para roles de usuario
-type Role = "admin" | "cashier" | "viewer";
+// type Role = "admin" | "cashier" | "viewer";
 
 // Estructura del objeto usuario
 type User = {
   id: string;
   email: string;
-  role: Role;
+  role?: string;
   name?: string; // El signo ? indica que es opcional
 };
 

@@ -42,3 +42,7 @@ export * from './dashboard/ingresos/EditIngresoForm';
 export * from './dashboard/ingresos/IndexIngresoComponent';
 export * from './dashboard/ingresos/IndexIngresoDataTable';
 export * from './dashboard/ingresos/NewIngresoForm';
+export * from './dashboard/ingresos/IndexEstadisticasComponent';
+
+
+export * from './dashboard/shared/MonthDateInput';

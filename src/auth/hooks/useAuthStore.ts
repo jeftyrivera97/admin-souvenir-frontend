@@ -54,7 +54,7 @@ export const useAuthStore = () => {
         id: data.user.id,
         email: data.user.email,
         name: data.user.name,
-        role: (data.user.role as "admin" | "cashier" | "viewer") || "admin"
+        role: data.user.role,
       };
       
       // Guardar en el store de Zustand

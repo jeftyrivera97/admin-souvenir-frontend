@@ -30,6 +30,28 @@ export class IngresosService {
     }
   };
 
+    static getIngresosByMonth = async (
+    month: string,
+    year: string,
+  
+  ): Promise<IngresoType> => {
+    try {
+      console.log(`📄 Obteniendo ingresos - Mes: ${month}, Año: ${year}`);
+
+      const response = await api.get<IngresoType>("/ingresos", {
+        params: { month, year },
+      });
+
+      console.log("✅ Ingresos obtenidas:", response.data.data.length, "registros");
+      console.log("📄 Paginación:", response.data.pagination);
+
+      return response.data;
+    } catch (error) {
+      console.error("❌ Error al obtener ingresos:", error);
+      throw error;
+    }
+  };
+
   /**
    * Buscar ingresos por término de búsqueda
    */
