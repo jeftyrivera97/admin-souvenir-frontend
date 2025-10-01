@@ -1,51 +1,18 @@
-import { IndexEstadisticasComponent, IndexIngresosComponent, IndexIngresosDataTable, MonthDateInput } from "@/components";
-
+import { IndexIngresosStatisticsComponent, IndexIngresosDataTable, MonthDateInput, NewItemButton } from "@/components";
 import { useEffect, useState } from "react";
-import type {
-  IngresoData,
-  Pagination as PaginationType,
-} from "@/interfaces/Ingreso";
-import { IngresosService } from "@/services/ingresos/ingresos.service";
+import useIngresoStore from '@/store/ingreso'
+import { useAuth } from "@/store/auth";
 
-
-//import { useAuth } from "@/store/auth";
 
 export const IngresosPage = () => {
 
-  const [ingresos, setIngresos] = useState<IngresoData[]>([]);
-  const [pagination, setPagination] = useState<PaginationType>({
-    page: 1,
-    limit: 10,
-    total: 0,
-    pages: 1,
-  });
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [searchMode, setSearchMode] = useState(false);
-  const [searchLoading, setSearchLoading] = useState(false);
+  const pagination = useIngresoStore((s) => s.pagination)
+  const fetchIngresos = useIngresoStore((s) => s.fetchIngresos)
+  const setSelectedMonth = useIngresoStore((s) => s.setSelectedMonth)
+  const user = useAuth((s) => s.user);
 
-  useEffect(() => {
-    if (!searchMode) {
-      const fetchIngresos = async () => {
-        try {
-          setLoading(true);
-          //  USANDO SERVICIO
-          const response = await IngresosService.getIngresos(
-            pagination.page,
-            pagination.limit
-          );
-          setIngresos(response.data);
-          setPagination(response.pagination);
-        } catch (err) {
-          console.error("Error al cargar ingresos:", err);
-          setError("Error al cargar las ingresos");
-        } finally {
-          setLoading(false);
-        }
-      };
-      fetchIngresos();
-    }
-  }, [pagination.page, pagination.limit, searchMode]);
+  const role = user?.role || '2';
+  console.log("role: ", role);
 
   const getCurrentYearMonth = () => {
     const today = new Date()
@@ -54,40 +21,87 @@ export const IngresosPage = () => {
     return `${year}-${month}`
   }
 
+  // local date state only for calendar UI (keeps previous behavior)
   const [date, setDate] = useState<Date | undefined>(() => {
     const today = new Date()
     return new Date(today.getFullYear(), today.getMonth(), 1)
   })
 
-  const [selectedMonth, setSelectedMonth] = useState<string>(() => getCurrentYearMonth())
+  // selectedMonth is kept in store meta; derive value for MonthDateInput
+  const selectedMonth = useIngresoStore((s) => s.meta.month) ?? getCurrentYearMonth()
 
   const handleMonthChange = (month: string) => {
+    // update store -> store will fetch
     setSelectedMonth(month)
-    // sincronizar con el calendario: usar el primer día del mes
+    // keep local calendar in sync
     const [y, m] = month.split('-')
     const d = new Date(Number(y), Number(m) - 1, 1)
     setDate(d)
   }
 
-  // si el usuario selecciona una fecha en el calendario, sincronizamos el input de mes
   useEffect(() => {
-    if (!date) return
-    const y = date.getFullYear()
-    const m = String(date.getMonth() + 1).padStart(2, '0')
-    const month = `${y}-${m}`
-    if (month !== selectedMonth) setSelectedMonth(month)
-  }, [date])
+    // on mount, initialize store with current month
+    const month = getCurrentYearMonth()
+    setSelectedMonth(month)
+    // ensure data loaded
+    fetchIngresos(1, pagination.limit, month).catch(() => { })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
 
+  if (role === "1" || role === "3") {
+    // privileged roles: show full dashboard (stats, categorias, table)
+    return (
+      <>
+        <div className="grid grid-cols-3 grid-rows-1 gap-4">
+          <div>
+            <MonthDateInput selectedMonth={selectedMonth} onMonthChange={handleMonthChange} />
+          </div>
 
+          <div />
+
+          <div>
+            <NewItemButton placeholder="Nuevo Ingreso" />
+          </div>
+        </div>
+
+
+        <div className="grid grid-cols-1 grid-rows-1 gap-4">
+          <IndexIngresosStatisticsComponent />
+        </div>
+      
+
+
+        <div className="grid grid-cols-1 grid-rows-1 gap-4">
+          <IndexIngresosDataTable />
+        </div>
+
+      </>
+    )
+  }
+
+  // non-privileged roles: render controls and just the table
   return (
     <>
-      <div>
-        <MonthDateInput selectedMonth={selectedMonth} onMonthChange={handleMonthChange} />
+      <div className="grid grid-cols-3 grid-rows-1 gap-4">
+        <div>
+          <MonthDateInput selectedMonth={selectedMonth} onMonthChange={handleMonthChange} />
+        </div>
+
+        <div />
+
+        <div>
+          <NewItemButton placeholder="Nuevo Ingreso" />
+        </div>
       </div>
-      <IndexIngresosComponent />
-      <IndexEstadisticasComponent ingresos={ingresos} />
-      <IndexIngresosDataTable />
+
+      <div className="grid grid-cols-1 grid-rows-1 gap-4">
+        <IndexIngresosDataTable />
+      </div>
     </>
-  );
+  )
+
+
+
+
 };

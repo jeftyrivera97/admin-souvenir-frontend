@@ -1,44 +1,80 @@
 export interface IngresoType {
-    data:       IngresoData[];
+    data: IngresoData[];
+    statistics: Statistics;
     pagination: Pagination;
+    meta: Meta;
 }
 
 export interface IngresoData {
-    id:                  string;
-    codigo_ingreso:      string;
-    fecha:               string;
-    descripcion:         string;
-    id_categoria:        string;
-    total:               number;
-    id_estado:           string;
-    id_usuario:          string;
-    created_at:          string;
-    updated_at:          string;
-    deleted_at:          null;
+    id: string;
+    codigo_ingreso: string;
+    fecha: string;
+    descripcion: string;
+    id_categoria: string;
+    total: number;
+    id_estado: string;
+    id_usuario: string;
+    created_at: string;
+    upstringd_at: string;
+    deleted_at: null;
     categorias_ingresos: CategoriasIngresos;
-    estados:             IngresosEstados;
+    estados: Estados;
 }
 
 export interface CategoriasIngresos {
-    id:          string;
+    id: string;
     descripcion: string;
-    id_tipo:     string;
-    id_estado:   string;
-    id_usuario:  string;
-    created_at:  string;
-    updated_at:  string;
-    deleted_at:  null;
+    id_tipo: string;
+    id_estado: string;
+    id_usuario: string;
+    created_at: string;
+    upstringd_at: string;
+    deleted_at: null;
 }
 
-export interface IngresosEstados {
-    id:          string;
+export interface Estados {
+    id: string;
     descripcion: string;
-    deleted_at:  null;
+    deleted_at: null;
+}
+
+export interface Meta {
+    month: string;
+    prevMonth: string;
 }
 
 export interface Pagination {
-    page:  number;
+    page: number;
     limit: number;
     total: number;
     pages: number;
+}
+
+export interface Statistics {
+    totalRegistros: number;
+    totalMonth: number;
+    totalMonthPrev: number;
+    totalYear: number;
+    totalYearPrev: number;
+    diferenciaMensual: number;
+    diferenciaAnual: number;
+    porcentajeCambioMensual: number;
+    porcentajeCambioAnual: number;
+    categorias: Categoria[];
+    tipos: Categoria[];
+    totalsMonths: TotalsMonth[];
+}
+
+export interface Categoria {
+    id_categoria?: string;
+    descripcion: string;
+    total: number;
+    percentage: number;
+    id_tipo?: string;
+}
+
+export interface TotalsMonth {
+    month: string;
+    monthName: string;
+    total: number;
 }

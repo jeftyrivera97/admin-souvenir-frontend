@@ -39,10 +39,15 @@ export * from './dashboard/proveedores/NewProveedorForm';
 
 
 export * from './dashboard/ingresos/EditIngresoForm';
-export * from './dashboard/ingresos/IndexIngresoComponent';
+export * from './dashboard/ingresos/IndexIngresosStatisticsComponent';
 export * from './dashboard/ingresos/IndexIngresoDataTable';
 export * from './dashboard/ingresos/NewIngresoForm';
-export * from './dashboard/ingresos/IndexEstadisticasComponent';
+export * from './dashboard/shared/IndexEstadisticasComponent';
 
 
 export * from './dashboard/shared/MonthDateInput';
+export * from './dashboard/shared/IndexCategoriasDataTableComponent';
+export * from './dashboard/shared/IndexTipoDataTableComponent';
+export * from './dashboard/shared/charts/AnualMonthlyBarChartComponent';
+export * from './dashboard/shared/charts/MonthCategoryPieChartComponent';
+export * from './dashboard/shared/charts/MonthTiposPieChartComponent'

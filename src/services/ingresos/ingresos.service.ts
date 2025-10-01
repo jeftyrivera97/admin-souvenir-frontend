@@ -11,13 +11,14 @@ export class IngresosService {
    */
   static getIngresos = async (
     page: number = 1,
-    limit: number = 10
+    limit: number = 10,
+    month: string = "",
   ): Promise<IngresoType> => {
     try {
-      console.log(`📄 Obteniendo ingresos - Página: ${page}, Límite: ${limit}`);
+      console.log(`📄 Obteniendo ingresos - Página: ${page}, Límite: ${limit}, Mes: ${month}`);
 
       const response = await api.get<IngresoType>("/ingresos", {
-        params: { page, limit },
+        params: { page, limit, month },
       });
 
       console.log("✅ Ingresos obtenidas:", response.data.data.length, "registros");
@@ -30,27 +31,6 @@ export class IngresosService {
     }
   };
 
-    static getIngresosByMonth = async (
-    month: string,
-    year: string,
-  
-  ): Promise<IngresoType> => {
-    try {
-      console.log(`📄 Obteniendo ingresos - Mes: ${month}, Año: ${year}`);
-
-      const response = await api.get<IngresoType>("/ingresos", {
-        params: { month, year },
-      });
-
-      console.log("✅ Ingresos obtenidas:", response.data.data.length, "registros");
-      console.log("📄 Paginación:", response.data.pagination);
-
-      return response.data;
-    } catch (error) {
-      console.error("❌ Error al obtener ingresos:", error);
-      throw error;
-    }
-  };
 
   /**
    * Buscar ingresos por término de búsqueda
@@ -58,7 +38,8 @@ export class IngresosService {
   static searchIngresos = async (
     searchTerm: string,
     page: number = 1,
-    limit: number = 10
+    limit: number = 10,
+     month: string = "",
   ): Promise<IngresoType> => {
     try {
       console.log(`🔍 Buscando ingresos con término: "${searchTerm}"`);
@@ -68,6 +49,7 @@ export class IngresosService {
           search: searchTerm,
           page,
           limit,
+          month,
         },
       });
 

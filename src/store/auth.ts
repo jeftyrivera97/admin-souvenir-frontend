@@ -128,9 +128,4 @@ NUEVA ARQUITECTURA SEPARADA:
      await startLogin({ email, password });
    };
 
-=== Ventajas de esta separación ===
-✅ Store solo maneja estado (más limpio)
-✅ Lógica de API centralizada en useAuthStore
-✅ Reutilizable y testeable por separado
-✅ Fácil de mantener y extender
 */

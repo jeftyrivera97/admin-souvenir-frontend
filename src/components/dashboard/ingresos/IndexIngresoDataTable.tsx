@@ -9,64 +9,37 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { useEffect, useState } from "react";
-import type {
-  IngresoData,
-  Pagination as PaginationType,
-} from "@/interfaces/Ingreso";
+import { useState } from "react";
+import useIngresoStore from '@/store/ingreso'
 import { PaginationComponent } from "../shared/PaginationComponent";
 import { SearchItemInput } from "../shared/SearchItemInput";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import { PopcornIcon } from "lucide-react";
 import { Alert, AlertTitle } from "@/components/ui/alert";
-import { IngresosService } from "@/services/ingresos/ingresos.service";
 import { ingresosColumnas } from "@/helpers/dashboard/shared/getColumns";
 import { Link } from "react-router-dom";
 
 export function IndexIngresosDataTable() {
-  const [ingresos, setIngresos] = useState<IngresoData[]>([]);
-  const [pagination, setPagination] = useState<PaginationType>({
-    page: 1,
-    limit: 10,
-    total: 0,
-    pages: 1,
-  });
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [searchMode, setSearchMode] = useState(false);
-  const [searchLoading, setSearchLoading] = useState(false);
-
-  useEffect(() => {
-    // Solo cargar todas las ingresos si no estamos en modo búsqueda
-    if (!searchMode) {
-      const fetchIngresos = async () => {
-        try {
-          setLoading(true);
-          //  USANDO SERVICIO
-          const response = await IngresosService.getIngresos(
-            pagination.page,
-            pagination.limit
-          );
-          setIngresos(response.data);
-          setPagination(response.pagination);
-        } catch (err) {
-          console.error("Error al cargar ingresos:", err);
-          setError("Error al cargar las ingresos");
-        } finally {
-          setLoading(false);
-        }
-      };
-      fetchIngresos();
-    }
-  }, [pagination.page, pagination.limit, searchMode]);
+  const ingresos = useIngresoStore(s => s.data)
+  const pagination = useIngresoStore(s => s.pagination)
+  const loading = useIngresoStore(s => s.loading)
+  const error = useIngresoStore(s => s.error)
+  const meta = useIngresoStore(s => s.meta)
+  const fetchIngresos = useIngresoStore(s => s.fetchIngresos)
+  const searchIngresos = useIngresoStore(s => s.searchIngresos)
+  const setPage = useIngresoStore(s => s.setPage)
+  const setLimit = useIngresoStore(s => s.setLimit)
+  
+  const [searchLoading, setSearchLoading] = useState(false)
+  const [searchMode, setSearchMode] = useState(false)
 
   const handlePageChange = (newPage: number) => {
-    setPagination((prev) => ({ ...prev, page: newPage }));
+    setPage(newPage)
   };
 
   const handleLimitChange = (newLimit: number) => {
-    setPagination((prev) => ({ ...prev, limit: newLimit, page: 1 }));
+    setLimit(newLimit)
   };
 
   const handleSearch = async (searchTerm: string) => {
@@ -78,33 +51,15 @@ export function IndexIngresosDataTable() {
 
     try {
       setSearchLoading(true);
-      setError(null);
+      // delegar en la store
+      await searchIngresos(searchTerm)
+      setSearchMode(true)
+      // store actualiza data y paginación
 
-      // ✅ USANDO NUEVO SERVICIO - Realizar búsqueda usando IngresosService
-      console.log(" Realizando búsqueda:", searchTerm);
-      const response = await IngresosService.searchIngresos(searchTerm, 1, 50); // Máximo 50 resultados
-
-      // Mostrar los resultados de la búsqueda
-      setIngresos(response.data);
-      setSearchMode(true);
-
-      // Actualizar paginación con los datos de la respuesta
-      setPagination({
-        page: response.pagination.page,
-        limit: response.pagination.limit,
-        total: response.pagination.total,
-        pages: response.pagination.pages,
-      });
-
-      // Búsqueda general por código de ingreso usando getIngresoBySearch
+      
     } catch (err) {
       console.error("Error en búsqueda:", err);
-      if (err instanceof Error && err.message.includes("404")) {
-        setError("No se encontraron ingresos que coincidan con la búsqueda");
-      } else {
-        setError("Error al realizar la búsqueda");
-      }
-      setIngresos([]);
+      // store handles error state; nothing else to do here
     } finally {
       setSearchLoading(false);
     }
@@ -112,9 +67,9 @@ export function IndexIngresosDataTable() {
 
   const handleClearSearch = () => {
     setSearchMode(false);
-    setError(null);
-    setPagination((prev) => ({ ...prev, page: 1 }));
-    // El useEffect se ejecutará automáticamente y cargará todas las ingresos
+    setSearchLoading(false)
+    // reload page 1
+    fetchIngresos(1, pagination.limit).catch(() => {})
   };
 
   if (loading) {
@@ -155,13 +110,16 @@ export function IndexIngresosDataTable() {
         <div className="grid w-full max-w-xl items-start gap-4">
           <Alert>
             <PopcornIcon />
-            <AlertTitle>Mostrando resultados de búsqueda</AlertTitle>
+            <AlertTitle>
+              Mostrando resultados de búsqueda
+              {meta.month && ` para el mes ${meta.month}`}
+            </AlertTitle>
           </Alert>
         </div>
       )}
 
       <Table>
-        <TableCaption>Lista de ingresos recientes</TableCaption>
+        <TableCaption>Lista de Ingresos</TableCaption>
         <TableHeader>
           <TableRow>
             {ingresosColumnas.map((columna) => (

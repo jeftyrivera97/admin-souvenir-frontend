@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { RefreshCcwDot } from "lucide-react"
+
 
 interface MonthDateInputProps {
   selectedMonth: string; //  Recibe el valor del padre
@@ -31,7 +33,7 @@ export const MonthDateInput = ({
   return (
     <div className="flex items-center gap-4 mb-4 ml-2">
       <span className="text-base-content font-medium">
-        Filtrar por período:
+        Filtrar:
       </span>
       <div className="flex items-center gap-2">
         <Input
@@ -44,23 +46,10 @@ export const MonthDateInput = ({
         />
         {selectedMonth && selectedMonth !== getCurrentYearMonth() && (
           <Button
-            className="btn btn-ghost btn-sm text-error"
+            variant="link"
             onClick={handleClearFilter}
-            title="Volver al mes actual"
           >
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-              />
-            </svg>
+           <RefreshCcwDot />
           </Button>
         )}
       </div>
