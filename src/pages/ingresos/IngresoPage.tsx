@@ -13,7 +13,7 @@ export const IngresosPage = () => {
   const fetchIngresos = useIngresoStore((s) => s.fetchIngresos);
   const setSelectedMonth = useIngresoStore((s) => s.setSelectedMonth);
   const user = useAuth((s) => s.user);
-  const role = user?.role || "2";
+  const role = user?.role || "3";
 
   const getCurrentYearMonth = () => {
     const today = new Date();
@@ -40,7 +40,7 @@ export const IngresosPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const isPrivileged = role === "1" || role === "3";
+  const isPrivileged = role === "1" || role === "2";
 
   const renderControls = () => (
     <div className="grid grid-cols-3 grid-rows-1 gap-4">

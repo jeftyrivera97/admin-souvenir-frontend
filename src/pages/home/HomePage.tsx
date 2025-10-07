@@ -6,11 +6,11 @@ import { useAuth } from "@/store/auth";
 
 export const HomePage = () => {
   const user = useAuth((s) => s.user);
-  const role = user?.role || "2";
+  const role = user?.role || "3";
 
   console.log("User Role:", role);
 
-  const isPrivileged = role === "1" || role === "3";
+  const isPrivileged = role === "1" || role === "2";
 
   return (
     <div>
