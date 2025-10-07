@@ -41,9 +41,10 @@ export function EditCompraForm({ compraId }: EditCompraFormProps) {
   const initialFormData = {
     codigo_compra: "",
     fecha: "",
+    descripcion: "",
     id_categoria: "",
     id_proveedor: "",
-    id_tipo_operacion: "", // ✅ Cambiar de id_tipo_pago a id_tipo_operacion
+    id_tipo_operacion: "", 
     fecha_pago: "",
     gravado15: 0,
     gravado18: 0,
@@ -99,6 +100,7 @@ export function EditCompraForm({ compraId }: EditCompraFormProps) {
           setFormData({
             codigo_compra: compra.codigo_compra || "",
             fecha: compra.fecha ? compra.fecha.split('T')[0] : "", // Convertir ISO a YYYY-MM-DD
+            descripcion: compra.descripcion || "",
             id_categoria: compra.id_categoria || "",
             id_proveedor: compra.id_proveedor || "",
             id_tipo_operacion: compra.id_tipo_operacion || "", // ✅ Mapeo directo sin cambio de nombre
@@ -135,6 +137,7 @@ export function EditCompraForm({ compraId }: EditCompraFormProps) {
       const compraData = {
         codigo_compra: formData.codigo_compra,
         fecha: `${formData.fecha}T00:00:00.000Z`,
+        descripcion: formData.descripcion,
         id_categoria: formData.id_categoria,
         id_proveedor: formData.id_proveedor,
         id_tipo_operacion: formData.id_tipo_operacion, // ✅ Mapeo directo
@@ -222,6 +225,18 @@ export function EditCompraForm({ compraId }: EditCompraFormProps) {
                   required
                 />
               </div>
+
+                <div className="grid gap-2">
+                <Label htmlFor="descripcion">Descripcion</Label>
+                <Input
+                  id="descripcion"
+                  type="text"
+                  value={formData.descripcion}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+
 
               <div className="grid gap-2">
                 <Label htmlFor="id_categoria">Categoria</Label>

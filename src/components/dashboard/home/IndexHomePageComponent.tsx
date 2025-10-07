@@ -1,34 +1,21 @@
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+
 import {
   ShoppingCart,
   DollarSign,
-  Plus,
   ArrowRight,
   Activity,
   ShoppingBasket,
   User,
   UserCog2,
   Car,
-  CircleDollarSign,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import type { IngresoData } from "@/interfaces/Ingreso";
-import { ComprasService, GastosService, IngresosService } from "@/services";
-import type { CompraData } from "@/interfaces/Compra";
-import type { GastoData } from "@/interfaces/Gasto";
-import type { PlanillaData } from "@/interfaces/Planilla";
-import { PlanillasService } from "@/services/planillas/planilla.service";
-import type { VentaData } from "@/interfaces/Venta";
-import { VentasService } from "@/services/ventas/ventas.service";
+
 
 export const IndexHomePageComponent = () => {
   const quickActions = [
@@ -76,60 +63,16 @@ export const IndexHomePageComponent = () => {
     },
   ];
 
-  const [ingresos, setIngresos] = useState<IngresoData[]>([]);
-  const [ventas, setVentas] = useState<VentaData[]>([]);
-  const [compras, setCompras] = useState<CompraData[]>([]);
-  const [gastos, setGastos] = useState<GastoData[]>([]);
-  const [planillas, setPlanillas] = useState<PlanillaData[]>([]);
 
-  useEffect(() => {
-    // Fetch ingresos data from API or other source
-    const fetchIngresos = async () => {
-      const dataIngresos = await IngresosService.getIngresos();
-      setIngresos(dataIngresos.data);
-    };
-
-    const fetchCompras = async () => {
-      const dataCompras = await ComprasService.getCompras();
-      setCompras(dataCompras.data);
-    };
-
-    const fetchGastos = async () => {
-      const dataGastos = await GastosService.getGastos();
-      setGastos(dataGastos  .data);
-    };
-
-    const fetchPlanillas = async () => {
-      const dataPlanillas = await PlanillasService.getPlanillas();
-      setPlanillas(dataPlanillas.data);
-    };
-
-     const fetchVentas = async () => {
-      const dataVentas = await VentasService.getVentas();
-      setVentas(dataVentas.data);
-    };
-
-    
-
-    fetchIngresos();
-    fetchCompras();
-    fetchPlanillas();
-    fetchGastos();
-    fetchVentas();
-
-
-  }, []);
-
-  console.log(ingresos);
 
   return (
-    <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
+    <div className="flex-1 space-y-6 p-4 md:p-6">
       {/* Header */}
-      <div className="flex items-center justify-between space-y-2">
+      <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
+          <h2 className="text-2xl font-bold tracking-tight">Dashboard Principal</h2>
           <p className="text-muted-foreground">
-            Resumen general del sistema administrativo
+          Lista de accesos rápidos para las acciones más comunes
           </p>
         </div>
         <div className="flex items-center space-x-2">
@@ -139,100 +82,25 @@ export const IndexHomePageComponent = () => {
           </Badge>
         </div>
       </div>
-
-      {/* Quick Stats Summary */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Resumen del Mes</CardTitle>
-          <CardDescription>
-            Estadísticas generales del mes actual
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-4 md:grid-cols-5">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-blue-100 rounded-lg">
-                <DollarSign className="w-6 h-6 text-blue-600" />
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Ingresos</p>
-                <p className="text-2xl font-bold">{ingresos.length}</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-blue-100 rounded-lg">
-                <CircleDollarSign className="w-6 h-6 text-blue-600" />
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Ventas</p>
-                <p className="text-2xl font-bold">{ventas.length}</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-blue-100 rounded-lg">
-                <ShoppingCart className="w-6 h-6 text-blue-600" />
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Compras</p>
-                <p className="text-2xl font-bold">{compras.length}</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-green-100 rounded-lg">
-                <ShoppingBasket className="w-6 h-6 text-green-600" />
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Gastos</p>
-                <p className="text-2xl font-bold">{gastos.length}</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-green-100 rounded-lg">
-                <UserCog2 className="w-6 h-6 text-green-600" />
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Planillas</p>
-                <p className="text-2xl font-bold">{planillas.length}</p>
-              </div>
-            </div>
-            
-          </div>
-        </CardContent>
-      </Card>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {/* Quick Actions */}
-        <Card className="col-span-2">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Plus className="w-5 h-5" />
-              Acciones Rápidas
-            </CardTitle>
-            <CardDescription>
-              Accede rápidamente a las funciones más utilizadas
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="grid gap-4 grid-cols-3">
-            {quickActions.map((action, index) => (
-              <Link key={index} to={action.href}>
-                <Button
-                  variant="outline"
-                  className="w-full h-auto p-4 flex items-start gap-3 hover:shadow-md transition-all"
-                >
-                  <div className={`p-2 rounded-lg ${action.color} text-white`}>
-                    <action.icon className="w-4 h-4" />
+        {quickActions.map((action, index) => (
+          <Link key={index} to={action.href}>
+            <Card className="hover:shadow-lg transition-all duration-200 cursor-pointer">
+              <CardContent className="p-6">
+                <div className="flex items-center space-x-4">
+                  <div className={`w-12 h-12 rounded-full ${action.color} flex items-center justify-center`}>
+                    <action.icon className="w-6 h-6 text-white" />
                   </div>
-                  <div className="text-left flex-1">
-                    <div className="font-semibold text-sm">{action.title}</div>
-                    <div className="text-xs text-muted-foreground">
-                      {action.description}
-                    </div>
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-lg">{action.title}</h3>
+                    <p className="text-sm text-muted-foreground">{action.description}</p>
                   </div>
-                  <ArrowRight className="w-4 h-4 ml-auto" />
-                </Button>
-              </Link>
-            ))}
-          </CardContent>
-        </Card>
+                  <ArrowRight className="w-5 h-5 text-muted-foreground" />
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
+        ))}
       </div>
     </div>
   );

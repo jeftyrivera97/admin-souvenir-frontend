@@ -12,7 +12,7 @@ export const IndexProveedoresComponent = () => {
         <div></div>
         <div>
           <Link to="/proveedores/new">
-            <NewItemButton placeholder="Nuevo Proveedor" />
+            <NewItemButton placeholder="Nuevo Proveedor" href="/proveedores/new" />
           </Link>
         </div>
       </div>

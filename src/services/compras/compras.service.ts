@@ -10,13 +10,14 @@ export class ComprasService {
    */
   static getCompras = async (
     page: number = 1,
-    limit: number = 10
+    limit: number = 10,
+    month: string = "",
   ): Promise<CompraType> => {
     try {
-      console.log(`📄 Obteniendo compras - Página: ${page}, Límite: ${limit}`);
+      console.log(`📄 Obteniendo compras - Página: ${page}, Límite: ${limit}, Mes: ${month}`);
 
       const response = await api.get<CompraType>("/compras", {
-        params: { page, limit },
+        params: { page, limit, month },
       });
 
       console.log("✅ Compras obtenidas:", response.data.data.length, "registros");
@@ -24,7 +25,7 @@ export class ComprasService {
 
       return response.data;
     } catch (error) {
-      console.error("❌ Error al obtener compras:", error);
+      console.error("❌ Error al obtener ingresos:", error);
       throw error;
     }
   };
@@ -35,7 +36,8 @@ export class ComprasService {
   static searchCompras = async (
     searchTerm: string,
     page: number = 1,
-    limit: number = 10
+    limit: number = 10,
+     month: string = "",
   ): Promise<CompraType> => {
     try {
       console.log(`🔍 Buscando compras con término: "${searchTerm}"`);
@@ -45,6 +47,7 @@ export class ComprasService {
           search: searchTerm,
           page,
           limit,
+          month,
         },
       });
 

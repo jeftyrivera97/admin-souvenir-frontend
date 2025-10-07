@@ -93,7 +93,7 @@ export function NewIngresoForm() {
         const axiosError = error as {
           response: { status: number; statusText: string; data: unknown };
         };
-        console.error("📄 Detalles del error:", {
+        console.error("Detalles del error:", {
           status: axiosError.response?.status,
           statusText: axiosError.response?.statusText,
           data: axiosError.response?.data,

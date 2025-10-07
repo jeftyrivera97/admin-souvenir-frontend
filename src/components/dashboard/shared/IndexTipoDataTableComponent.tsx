@@ -13,8 +13,16 @@ import {
     TableRow,
 } from "@/components/ui/table"
 
+export interface Tipos {
+  id: string;
+  id_tipo: string;
+  descripcion: string;
+  percentage: number;
+  total: number;
+  categoria?: string;
+}
 
-export const IndexTipoDataTableComponent = ({ tipos = [], title }: { tipos?: any[], title: string }) => {
+export const IndexTipoDataTableComponent = ({ tipos = [], title }: { tipos?: Tipos[], title: string }) => {
     return (
 
         <div className="grid grid-cols-1 grid-rows-1 gap-4">

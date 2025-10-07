@@ -37,6 +37,7 @@ export function NewCompraForm() {
   const initialFormData = {
     codigo_compra: "",
     fecha: "",
+    descripcion: "",
     id_categoria: "",
     id_proveedor: "",
     id_tipo_operacion: "",
@@ -99,6 +100,7 @@ export function NewCompraForm() {
       const compraData = {
         codigo_compra: formData.codigo_compra,
         fecha: `${formData.fecha}T00:00:00.000Z`,
+        descripcion: formData.descripcion,
         id_categoria: formData.id_categoria,
         id_proveedor: formData.id_proveedor,
         id_tipo_operacion: formData.id_tipo_operacion,
@@ -180,6 +182,17 @@ export function NewCompraForm() {
                   id="fecha"
                   type="date"
                   value={formData.fecha}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+
+               <div className="grid gap-2">
+                <Label htmlFor="descripcion">Descripcion</Label>
+                <Input
+                  id="descripcion"
+                  type="text"
+                  value={formData.descripcion}
                   onChange={handleInputChange}
                   required
                 />

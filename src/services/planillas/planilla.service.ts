@@ -1,7 +1,6 @@
 import api from "@/api/api";
 import type { PlanillaType, PlanillaData } from "@/interfaces/Planilla";
 
-
 /**
  * Servicio para manejar todas las operaciones relacionadas con planillas
  */
@@ -11,13 +10,14 @@ export class PlanillasService {
    */
   static getPlanillas = async (
     page: number = 1,
-    limit: number = 10
+    limit: number = 10,
+    month: string = "",
   ): Promise<PlanillaType> => {
     try {
-      console.log(`📄 Obteniendo planillas - Página: ${page}, Límite: ${limit}`);
+      console.log(`📄 Obteniendo planillas - Página: ${page}, Límite: ${limit}, Mes: ${month}`);
 
       const response = await api.get<PlanillaType>("/planillas", {
-        params: { page, limit },
+        params: { page, limit, month },
       });
 
       console.log("✅ Planillas obtenidas:", response.data.data.length, "registros");
@@ -25,7 +25,7 @@ export class PlanillasService {
 
       return response.data;
     } catch (error) {
-      console.error("❌ Error al obtener planillas:", error);
+      console.error("❌ Error al obtener ingresos:", error);
       throw error;
     }
   };
@@ -36,7 +36,8 @@ export class PlanillasService {
   static searchPlanillas = async (
     searchTerm: string,
     page: number = 1,
-    limit: number = 10
+    limit: number = 10,
+     month: string = "",
   ): Promise<PlanillaType> => {
     try {
       console.log(`🔍 Buscando planillas con término: "${searchTerm}"`);
@@ -46,6 +47,7 @@ export class PlanillasService {
           search: searchTerm,
           page,
           limit,
+          month,
         },
       });
 

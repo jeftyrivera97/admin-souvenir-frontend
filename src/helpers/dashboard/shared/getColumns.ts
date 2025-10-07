@@ -1,6 +1,7 @@
 export const comprasColumnas = [
   "Codigo Compra",
   "Fecha",
+  "Descripcion",
   "Proveedor",
   "Categoría",
   "Tipo de Pago",

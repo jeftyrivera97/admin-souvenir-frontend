@@ -2,14 +2,8 @@
 
 import * as React from "react";
 import {
-
   IconDashboard,
-
-  IconHelp,
   IconInnerShadowTop,
-
-  IconSearch,
-  IconSettings,
   IconUsers,
   IconShoppingBag,
   IconPaperBag,
@@ -19,7 +13,6 @@ import {
 } from "@tabler/icons-react";
 
 import { NavMain } from "@/components/nav-main";
-import { NavSecondary } from "@/components/nav-secondary";
 import { NavUser } from "@/components/nav-user";
 import {
   Sidebar,
@@ -31,7 +24,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { useAuth } from "@/store/auth";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 const navMain = [
   {
@@ -71,24 +64,6 @@ const navMain = [
   },
 ];
 
-const navSecondary = [
-  {
-    title: "Configuracion",
-    url: "#",
-    icon: IconSettings,
-  },
-  {
-    title: "Acerca de",
-    url: "#",
-    icon: IconHelp,
-  },
-  {
-    title: "Buscar",
-    url: "#",
-    icon: IconSearch,
-  },
-];
-
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { user } = useAuth();
 
@@ -108,7 +83,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              
               <Link to="/">
                 <IconInnerShadowTop className="!size-5" />
                 <span className="text-base font-semibold">
@@ -121,7 +95,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={navMain} />
-        <NavSecondary items={navSecondary} className="mt-auto" />
+       
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={userData} />

@@ -1,6 +1,8 @@
 export interface PlanillaType {
   data: PlanillaData[];
+  statistics: Statistics;
   pagination: Pagination;
+  meta: Meta;
 }
 
 export interface PlanillaData {
@@ -53,9 +55,43 @@ export interface PlanillaEstados {
   deleted_at: null;
 }
 
+export interface Meta {
+  month: string;
+  prevMonth: string;
+}
+
 export interface Pagination {
   page: number;
   limit: number;
   total: number;
   pages: number;
+}
+
+export interface Statistics {
+  totalRegistros: number;
+  totalMonth: number;
+  totalMonthPrev: number;
+  totalYear: number;
+  totalYearPrev: number;
+  diferenciaMensual: number;
+  diferenciaAnual: number;
+  porcentajeCambioMensual: number;
+  porcentajeCambioAnual: number;
+  categorias: Categoria[];
+  tipos: Categoria[];
+  totalsMonths: TotalsMonth[];
+}
+
+export interface Categoria {
+  id_categoria?: string;
+  descripcion: string;
+  total: number;
+  percentage: number;
+  id_tipo?: string;
+}
+
+export interface TotalsMonth {
+  month: string;
+  monthName: string;
+  total: number;
 }

@@ -170,6 +170,7 @@ export function IndexComprasDataTable() {
                   {compra.codigo_compra}
                 </TableCell>
                 <TableCell>{compra.fecha}</TableCell>
+                  <TableCell>{compra.descripcion}</TableCell>
                 <TableCell>
                   {compra.proveedores?.descripcion || compra.id_proveedor}
                 </TableCell>

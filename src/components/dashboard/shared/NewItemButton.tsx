@@ -1,12 +1,14 @@
-import { Button } from "@/components/ui/button"
-import { Plus } from "lucide-react"
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import { Link } from "react-router-dom";
 
-
-export const NewItemButton = ({placeholder} : {placeholder: string}) => {
+export const NewItemButton = ({ placeholder, href }: { placeholder: string, href: string }) => {
   return (
-     <Button variant="outline">
-       <Plus />
-       {placeholder}
-     </Button>
-  )
-}
+    <Link to={href}>
+      <Button variant="outline">
+        <Plus />
+        {placeholder}
+      </Button>
+    </Link>
+  );
+};

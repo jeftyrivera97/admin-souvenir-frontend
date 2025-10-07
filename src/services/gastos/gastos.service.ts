@@ -1,7 +1,6 @@
 import api from "@/api/api";
 import type { GastoType, GastoData } from "@/interfaces/Gasto";
 
-
 /**
  * Servicio para manejar todas las operaciones relacionadas con gastos
  */
@@ -11,13 +10,14 @@ export class GastosService {
    */
   static getGastos = async (
     page: number = 1,
-    limit: number = 10
+    limit: number = 10,
+    month: string = "",
   ): Promise<GastoType> => {
     try {
-      console.log(`📄 Obteniendo gastos - Página: ${page}, Límite: ${limit}`);
+      console.log(`📄 Obteniendo gastos - Página: ${page}, Límite: ${limit}, Mes: ${month}`);
 
       const response = await api.get<GastoType>("/gastos", {
-        params: { page, limit },
+        params: { page, limit, month },
       });
 
       console.log("✅ Gastos obtenidas:", response.data.data.length, "registros");
@@ -25,7 +25,7 @@ export class GastosService {
 
       return response.data;
     } catch (error) {
-      console.error("❌ Error al obtener gastos:", error);
+      console.error("❌ Error al obtener ingresos:", error);
       throw error;
     }
   };
@@ -36,7 +36,8 @@ export class GastosService {
   static searchGastos = async (
     searchTerm: string,
     page: number = 1,
-    limit: number = 10
+    limit: number = 10,
+     month: string = "",
   ): Promise<GastoType> => {
     try {
       console.log(`🔍 Buscando gastos con término: "${searchTerm}"`);
@@ -46,6 +47,7 @@ export class GastosService {
           search: searchTerm,
           page,
           limit,
+          month,
         },
       });
 

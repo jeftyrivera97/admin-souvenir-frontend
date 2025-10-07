@@ -1,5 +1,5 @@
 
-export * from './dashboard/home/IndexHomePageComponent';
+export * from './dashboard/home/IndexAdminHomePageComponent';
 
 export * from './dashboard/shared/NewItemButton';
 export * from './dashboard/shared/SearchItemInput';
@@ -12,17 +12,17 @@ export * from './dashboard/shared/SuccessAlertComponent';
 
 export * from './dashboard/compras/EditCompraForm';
 export * from './dashboard/compras/NewCompraForm';
-export * from './dashboard/compras/IndexComprasComponent';
+export * from './dashboard/compras/IndexComprasStatisticsComponent';
 export * from './dashboard/compras/IndexComprasDataTable';
 
 
 export * from './dashboard/gastos/EditGastoForm';
-export * from './dashboard/gastos/IndexGastoComponent';    
+export * from './dashboard/gastos/IndexGastosStatisticsComponent';    
 export * from './dashboard/gastos/IndexGastoDataTable';
 export * from './dashboard/gastos/NewGastoForm';
 
 export * from './dashboard/planillas/EditPlanillaForm';
-export * from './dashboard/planillas/IndexPlanillasComponent';
+export * from './dashboard/planillas/IndexPlanillasStatisticsComponent';
 export * from './dashboard/planillas/IndexPlanillasDataTable';
 export * from './dashboard/planillas/NewPlanillaForm';
 
@@ -43,6 +43,7 @@ export * from './dashboard/ingresos/IndexIngresosStatisticsComponent';
 export * from './dashboard/ingresos/IndexIngresoDataTable';
 export * from './dashboard/ingresos/NewIngresoForm';
 export * from './dashboard/shared/IndexEstadisticasComponent';
+export * from './dashboard/home/BarChartByCategoryComponent';
 
 
 export * from './dashboard/shared/MonthDateInput';
@@ -50,4 +51,8 @@ export * from './dashboard/shared/IndexCategoriasDataTableComponent';
 export * from './dashboard/shared/IndexTipoDataTableComponent';
 export * from './dashboard/shared/charts/AnualMonthlyBarChartComponent';
 export * from './dashboard/shared/charts/MonthCategoryPieChartComponent';
-export * from './dashboard/shared/charts/MonthTiposPieChartComponent'
+export * from './dashboard/shared/charts/MonthTiposPieChartComponent';
+
+export * from './dashboard/home/IndexHomePageComponent';
+export * from './dashboard/home/IndexAdminHomePageComponent';
+export * from './dashboard/home/PieCharDistributionComponent';

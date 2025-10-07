@@ -1,4 +1,4 @@
-import useIngresoStore from "@/store/ingreso";
+import useCompraStore from "@/store/compra";
 import { IndexEstadisticasSection } from "../shared/IndexEstadisticasComponent";
 import { IndexCategoriasDataTableComponent } from "../shared/IndexCategoriasDataTableComponent";
 import { IndexTipoDataTableComponent } from "../shared/IndexTipoDataTableComponent";
@@ -8,12 +8,12 @@ import {
   MonthTiposPieChartComponent,
 } from "@/components";
 
-export const IndexIngresosStatisticsComponent = () => {
+export const IndexComprasStatisticsComponent = () => {
 
   
   // the backend data is stored in the store under `totals` (statistics)
-  const statistics = useIngresoStore((s) => s.statistics);
-  const meta = useIngresoStore((s) => s.meta);
+  const statistics = useCompraStore((s) => s.statistics);
+  const meta = useCompraStore((s) => s.meta);
 
   const categorias = statistics?.categorias ?? [];
   const tipos = statistics?.tipos ?? [];
@@ -31,7 +31,7 @@ export const IndexIngresosStatisticsComponent = () => {
           <MonthCategoryPieChartComponent
             data={statistics?.categorias ?? []}
             statistics={statistics}
-            title="Ingresos por Categoria"
+            title="Compras por Categoria"
             descripcion="Categorias"
           />
         </div>
@@ -39,7 +39,7 @@ export const IndexIngresosStatisticsComponent = () => {
           <MonthTiposPieChartComponent
             data={statistics?.tipos ?? []}
             statistics={statistics}
-            title="Ingresos por Tipo"
+            title="Compras por Tipo"
             descripcion="Tipos"
           />
         </div>
@@ -63,7 +63,7 @@ export const IndexIngresosStatisticsComponent = () => {
           <AnualMonthlyBarChartComponent
             data={statistics?.totalsMonths ?? []}
             statistics={statistics ?? {}}
-            title="Ingresos por Mes"
+            title="Compras por Mes"
           />
         </div>
       </div>

@@ -1,0 +1,26 @@
+<svg width="420" height="420" viewBox="0 0 420 420" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .bg{fill:#0F2F5E;}
+      .accent{fill:#2F80ED;}
+      .green{fill:#27AE60;}
+      .white{fill:#FFFFFF;}
+      .word{font-family:'Poppins', Arial, sans-serif; font-weight:700; letter-spacing:0.5px;}
+      .word-light{font-weight:500;}
+      .tag{font-family:'Inter', Arial, sans-serif; font-weight:500; font-size:18px; letter-spacing:0.5px;}
+    </style>
+  </defs>
+  <rect class="bg" width="420" height="420" rx="24"></rect>
+  <g transform="translate(150,70)">
+    <rect class="accent" x="0" y="90" width="28" height="70" rx="2"></rect>
+    <rect class="accent" x="40" y="70" width="28" height="90" rx="2"></rect>
+    <rect class="accent" x="80" y="36" width="28" height="124" rx="2"></rect>
+    <path class="green" d="M0,160 L80,96 L96,110 L132,66 L132,98 L146,98 L146,32 L88,32 L88,46 L116,46 L84,80 L68,66 Z"></path>
+  </g>
+  <text x="50%" y="245" text-anchor="middle" class="white word" font-size="80">
+    <tspan class="word-light">Si</tspan>FLOW
+  </text>
+  <text x="50%" y="285" text-anchor="middle" class="white tag">
+    Suite administrativo‑financiera integrada
+  </text>
+</svg>
