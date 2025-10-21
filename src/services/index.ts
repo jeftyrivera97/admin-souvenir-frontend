@@ -18,6 +18,9 @@ export * from './categorias-ingresos/categoriasIngresos.service';
 
 export * from './ventas/ventas.service';
 
+export * from './comprobantes/comprobantes.service';
+export * from './categorias-comprobantes/categoriasComprobantes.service';
+
 
 // Re-exportar funciones legacy de helpers para compatibilidad
 export * from '../helpers';

@@ -20,34 +20,36 @@ type User = {
 // En Zustand, esto es como el "contrato" de lo que puede hacer el store
 type AuthState = {
   // ESTADO: Datos que se almacenan en el store
-  user?: User;        // Usuario actual (undefined si no está logueado)
-  token?: string;     // Token JWT de autenticación
-  loading: boolean;   // Indica si hay una operación en progreso
-  error?: string;     // Mensaje de error si algo sale mal
+  user?: User; // Usuario actual (undefined si no está logueado)
+  token?: string; // Token JWT de autenticación
+  loading: boolean; // Indica si hay una operación en progreso
+  error?: string; // Mensaje de error si algo sale mal
 
   // COMPUTED/DERIVED: Funciones que calculan valores basados en el estado
-  isAuthenticated: () => boolean;  // Devuelve true si el usuario está logueado
+  isAuthenticated: () => boolean; // Devuelve true si el usuario está logueado
 
   // ACTIONS: Funciones que modifican solo el estado (sin lógica de API)
-  setSession: (payload: { token?: string; user?: User }) => void;    // Establece sesión manualmente
-  clearSession: () => void;                                          // Limpia toda la sesión
-  setLoading: (loading: boolean) => void;                           // Controla estado de carga
-  setError: (error: string) => void;                                // Establece mensaje de error
-  clearError: () => void;                                           // Limpia errores
-  setUser: (user: User) => void;                                    // Actualiza solo el usuario
-  setToken: (token: string) => void;                                // Actualiza solo el token
+  setSession: (payload: { token?: string; user?: User }) => void; // Establece sesión manualmente
+  clearSession: () => void; // Limpia toda la sesión
+  setLoading: (loading: boolean) => void; // Controla estado de carga
+  setError: (error: string) => void; // Establece mensaje de error
+  clearError: () => void; // Limpia errores
+  setUser: (user: User) => void; // Actualiza solo el usuario
+  setToken: (token: string) => void; // Actualiza solo el token
 };
 
 // Creación del store de Zustand con middlewares
 export const useAuth = create<AuthState>()(
-  devtools(     // Middleware para debugging con Redux DevTools
-    persist(    // Middleware para persistir datos en localStorage
+  devtools(
+    // Middleware para debugging con Redux DevTools
+    persist(
+      // Middleware para persistir datos en localStorage
       (set, get) => ({
         // VALORES INICIALES DEL ESTADO
-        user: undefined,     // No hay usuario al inicio
-        token: undefined,    // No hay token al inicio
-        loading: false,      // No hay operaciones en progreso
-        error: undefined,    // No hay errores al inicio
+        user: undefined, // No hay usuario al inicio
+        token: undefined, // No hay token al inicio
+        loading: false, // No hay operaciones en progreso
+        error: undefined, // No hay errores al inicio
 
         // FUNCIÓN COMPUTED: Verifica si el usuario está autenticado
         // get() obtiene el estado actual del store
@@ -62,11 +64,12 @@ export const useAuth = create<AuthState>()(
         },
 
         // ACCIÓN: Limpia toda la sesión
-        clearSession: () => set({ 
-          token: undefined, 
-          user: undefined, 
-          error: undefined 
-        }),
+        clearSession: () =>
+          set({
+            token: undefined,
+            user: undefined,
+            error: undefined,
+          }),
 
         // ACCIÓN: Controla el estado de loading
         setLoading: (loading: boolean) => set({ loading }),
@@ -86,7 +89,7 @@ export const useAuth = create<AuthState>()(
       {
         // CONFIGURACIÓN DE PERSISTENCIA
         name: "auth-storage", // Clave usada en localStorage
-        
+
         // partialize: Especifica qué partes del estado se deben persistir
         // Solo persiste token y user, no loading ni error (que son temporales)
         partialize: (state) => ({ token: state.token, user: state.user }),

@@ -21,6 +21,10 @@ export * from './dashboard/gastos/IndexGastosStatisticsComponent';
 export * from './dashboard/gastos/IndexGastoDataTable';
 export * from './dashboard/gastos/NewGastoForm';
 
+export * from './dashboard/comprobantes/EditComprobanteForm';
+export * from './dashboard/comprobantes/IndexComprobanteDataTable';
+export * from './dashboard/comprobantes/IndexComprobanteStatisticsComponent';
+
 export * from './dashboard/planillas/EditPlanillaForm';
 export * from './dashboard/planillas/IndexPlanillasStatisticsComponent';
 export * from './dashboard/planillas/IndexPlanillasDataTable';
