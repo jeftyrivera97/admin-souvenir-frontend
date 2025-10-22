@@ -1,7 +1,8 @@
-
 export interface VentaType {
     data:       VentaData[];
+    statistics: Statistics;
     pagination: Pagination;
+    meta:       Meta;
 }
 
 export interface VentaData {
@@ -16,9 +17,10 @@ export interface VentaData {
     created_at:        string;
     updated_at:        string;
     deleted_at:        null;
-    cajas_movimientos: CajasMovimientos;
-    estados:           Estados;
     comprobantes:      Comprobantes;
+    estados:           Estados;
+    cajas_movimientos: CajasMovimientos;
+    users:             Users;
 }
 
 export interface CajasMovimientos {
@@ -53,7 +55,7 @@ export interface Comprobantes {
     subtotal:              number;
     total:                 number;
     id_categoria:          string;
-    id_tipo_comprobante:   string;
+    id_tipo_operacion:     string;
     id_estado_comprobante: string;
     id_estado:             string;
     id_usuario:            string;
@@ -68,9 +70,58 @@ export interface Estados {
     deleted_at:  null;
 }
 
+export interface Users {
+    id:                string;
+    name:              string;
+    email:             string;
+    email_verified_at: null;
+    password:          string;
+    remember_token:    null;
+    created_at:        null;
+    updated_at:        null;
+}
+
+export interface Meta {
+    month:     string;
+    prevMonth: string;
+}
+
 export interface Pagination {
     page:  number;
     limit: number;
     total: number;
     pages: number;
+}
+
+export interface Statistics {
+    totalRegistros:          number;
+    totalMonth:              number;
+    totalMonthPrev:          number;
+    totalYear:               number;
+    totalYearPrev:           number;
+    diferenciaMensual:       number;
+    diferenciaAnual:         number;
+    porcentajeCambioMensual: number;
+    porcentajeCambioAnual:   number;
+    categorias:              Categorias[];
+    tipos:                   Categorias[];
+    totalsMonths:            TotalsMonth[];
+}
+
+
+export interface Categorias {
+  id: string;
+  descripcion: string;
+  id_tipo?: string;
+  id_estado: string;
+  id_usuario?: string;
+  created_at: string;
+  updated_at: string;
+  deleted_at: null;
+}
+
+export interface TotalsMonth {
+    month:     string;
+    monthName: string;
+    total:     number;
 }

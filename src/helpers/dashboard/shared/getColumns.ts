@@ -20,10 +20,19 @@ export const gastosColumnas = [
   "Acciones",
 ];
 
+
+export const ventasColumns = [
+  "Codigo Venta",
+  "Fecha",
+  "Codigo Comprobante",
+  "ID Sesion",
+  "Total",
+  "Acciones",
+];
+
 export const comprobantesColumnas = [
   "Codigo Comprobante",
   "Fecha",
-  "Descripcion",
   "Cliente",
   "Total",
   "Acciones",

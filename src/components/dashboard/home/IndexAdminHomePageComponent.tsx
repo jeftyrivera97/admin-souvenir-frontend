@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
   ShoppingCart,
-  DollarSign,
   Plus,
   Activity,
   ShoppingBasket,
@@ -35,7 +34,6 @@ export const IndexAdminHomePageComponent = () => {
   const fetchGastos = useGastoStore((state) => state.fetchGastos);
 
   // Leer datos de los stores para el dashboard
-  const ingresoStats = useIngresoStore((state) => state.statistics);
   const compraStats = useCompraStore((state) => state.statistics);
   const gastoStats = useGastoStore((state) => state.statistics);
 
@@ -45,12 +43,6 @@ export const IndexAdminHomePageComponent = () => {
   const [loading, setLoading] = useState(true);
 
   console.log("Loading dashboard:", loading);
-
-  // Calcular datos para mostrar en el dashboard
-  const ingresos = {
-    total: ingresoStats?.totalMonth || 0,
-    count: ingresoStats?.totalRegistros || 0,
-  };
 
   const compras = {
     total: compraStats?.totalMonth || 0,
@@ -62,13 +54,7 @@ export const IndexAdminHomePageComponent = () => {
     count: gastoStats?.totalRegistros || 0,
   };
   const quickActions = [
-    {
-      title: "Nuevo Ingreso",
-      description: "Registrar un nuevo ingreso",
-      icon: DollarSign,
-      href: "/ingresos/new",
-      color: "bg-blue-500",
-    },
+    
     {
       title: "Nueva Compra",
       description: "Registrar una nueva compra",
@@ -185,20 +171,6 @@ export const IndexAdminHomePageComponent = () => {
         <CardContent>
           <div className="grid gap-4 md:grid-cols-5">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-blue-100 rounded-lg">
-                <DollarSign className="w-6 h-6 text-blue-600" />
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Ingresos</p>
-                <p className="text-xl font-bold">
-                  L.{ingresos.total.toFixed(2)}
-                </p>
-                <p className="text-xs text-muted-foreground">
-                  {ingresos.count} registros
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
               <div className="p-2 bg-green-100 rounded-lg">
                 <CircleDollarSign className="w-6 h-6 text-green-600" />
               </div>
@@ -259,7 +231,7 @@ export const IndexAdminHomePageComponent = () => {
         <PieCharDistributionComponent />
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-1">
         {/* Quick Actions */}
         <Card className="col-span-2">
           <CardHeader>

@@ -25,11 +25,13 @@ import { Save } from "lucide-react";
 import {
   ComprobantesService,
   CategoriasComprobantesService,
+  ClientesService,
 } from "@/services";
+import { tiposOperacionesService } from "@/services/tipos-operaciones/tiposOperaciones.service";
 import { useEffect, useState } from "react";
 import type { CategoriaComprobanteData } from "@/interfaces/CategoriaComprobante";
-
-
+import type { TipoOperacionData } from "@/interfaces/TipoOperacion";
+import type { ClienteData } from "@/interfaces/Cliente";
 
 interface EditComprobanteFormProps {
   comprobanteId: string;
@@ -38,14 +40,22 @@ interface EditComprobanteFormProps {
 export function EditComprobanteForm({ comprobanteId }: EditComprobanteFormProps) {
   const initialFormData = {
     codigo_comprobante: "",
-    descripcion: "", 
     fecha: "",
+    id_cliente: "",
     id_categoria: "",
+    id_tipo_operacion: "",
+    gravado15: "",
+    gravado18: "",
+    impuesto15: "",
+    impuesto18: "",
+    exento: "",
+    descuentos: "",
     total: "",
   };
 
   const [categorias, setCategorias] = useState<CategoriaComprobanteData[]>([]);
- 
+  const [tiposOperaciones, setTiposOperaciones] = useState<TipoOperacionData[]>([]);
+  const [clientes, setClientes] = useState<ClienteData[]>([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState(initialFormData);
@@ -64,36 +74,46 @@ export function EditComprobanteForm({ comprobanteId }: EditComprobanteFormProps)
   useEffect(() => {
     const loadData = async () => {
       try {
-        // Cargar datos básicos (proveedores, tipos operaciones y categorías)
-        const [categoriasData] = await Promise.all([
+        // Cargar datos básicos (categorías, tipos de operación y clientes)
+        const [categoriasData, tiposOperacionesData, clientesData] = await Promise.all([
           CategoriasComprobantesService.getCategoriasComprobantes(1, 100),
+          tiposOperacionesService.getTiposOperaciones(),
+          ClientesService.getClientes(1, 100),
         ]);
 
         setCategorias(categoriasData.data);
+        setTiposOperaciones(tiposOperacionesData.data);
+        setClientes(clientesData.data);
 
-        // Cargar datos de la comprobante específica
+        // Cargar datos del comprobante específico
         const comprobanteData = await ComprobantesService.getComprobanteById(comprobanteId);
-        console.log("📋 Datos de la comprobante cargada:", comprobanteData);
+        console.log("📋 Datos del comprobante cargado:", comprobanteData);
 
-        // Poblar el formulario con los datos de la comprobante
+        // Poblar el formulario con los datos del comprobante
         if (comprobanteData.data) {
-          const comprobante = comprobanteData.data; 
-          console.log("📝 Datos de la comprobante:", comprobante);
-         
+          const comprobante = comprobanteData.data;
+          console.log("📝 Datos del comprobante:", comprobante);
 
           setFormData({
             codigo_comprobante: comprobante.codigo_comprobante || "",
-            fecha: comprobante.fecha ? comprobante.fecha.split("T")[0] : "", // Convertir ISO a YYYY-MM-DD
+            fecha: comprobante.fecha ? comprobante.fecha.split("T")[0] : "",
+            id_cliente: comprobante.id_cliente || "",
             id_categoria: comprobante.id_categoria || "",
-            descripcion: comprobante.descripcion || "", //
-            total: comprobante.total?.toString() || "",
+            id_tipo_operacion: comprobante.id_tipo_operacion || "",
+            gravado15: comprobante.gravado15?.toString() || "0",
+            gravado18: comprobante.gravado18?.toString() || "0",
+            impuesto15: comprobante.impuesto15?.toString() || "0",
+            impuesto18: comprobante.impuesto18?.toString() || "0",
+            exento: comprobante.exento?.toString() || "0",
+            descuentos: comprobante.descuentos?.toString() || "0",
+            total: comprobante.total?.toString() || "0",
           });
         } else {
-          console.warn("⚠️ No se encontraron datos de la comprobante");
+          console.warn("⚠️ No se encontraron datos del comprobante");
         }
       } catch (error) {
         console.error("Error al cargar los datos:", error);
-        toast.error("Error al cargar los datos de la comprobante");
+        toast.error("Error al cargar los datos del comprobante");
       } finally {
         setLoading(false);
       }
@@ -107,21 +127,29 @@ export function EditComprobanteForm({ comprobanteId }: EditComprobanteFormProps)
     setSubmitting(true);
 
     try {
-      console.log(" Datos del formulario antes de enviar:", formData);
+      console.log("📤 Datos del formulario antes de enviar:", formData);
       const comprobanteData = {
         codigo_comprobante: formData.codigo_comprobante,
         fecha: `${formData.fecha}T00:00:00.000Z`,
+        id_cliente: formData.id_cliente,
         id_categoria: formData.id_categoria,
+        id_tipo_operacion: formData.id_tipo_operacion,
+        gravado15: Number(formData.gravado15) || 0,
+        gravado18: Number(formData.gravado18) || 0,
+        impuesto15: Number(formData.impuesto15) || 0,
+        impuesto18: Number(formData.impuesto18) || 0,
+        exento: Number(formData.exento) || 0,
+        descuentos: Number(formData.descuentos) || 0,
         total: Number(formData.total) || 0,
       };
-      console.log("Datos mapeados para actualizar:", comprobanteData);
+      console.log("📦 Datos mapeados para actualizar:", comprobanteData);
 
-      // Actualizar en lugar de crear
-      const comprobanteActualizada = await ComprobantesService.updateComprobante(
+      // Actualizar comprobante
+      const comprobanteActualizado = await ComprobantesService.updateComprobante(
         comprobanteId,
         comprobanteData
       );
-      console.log("Comprobante actualizado:", comprobanteActualizada);
+      console.log("✅ Comprobante actualizado:", comprobanteActualizado);
       toast.success("Comprobante actualizado exitosamente!");
     } catch (error: unknown) {
       console.error("❌ Error al actualizar comprobante:", error);
@@ -136,19 +164,17 @@ export function EditComprobanteForm({ comprobanteId }: EditComprobanteFormProps)
         });
       }
       toast.error(
-        "Error al actualizar la comprobante. Revisa la consola para más detalles."
+        "Error al actualizar el comprobante. Revisa la consola para más detalles."
       );
     } finally {
       setSubmitting(false);
     }
   };
 
-  console.log("Me regenero:");
-
   if (loading) {
     return (
       <div className="flex justify-center p-8">
-        Cargando datos de la comprobante...
+        Cargando datos del comprobante...
       </div>
     );
   }
@@ -159,7 +185,7 @@ export function EditComprobanteForm({ comprobanteId }: EditComprobanteFormProps)
         <Toaster />
       </div>
       <form onSubmit={handleSubmit}>
-        <Card className="w-full max-w-4xl">
+        <Card className="w-full max-w-6xl">
           <CardHeader>
             <CardTitle>Editar comprobante</CardTitle>
             <CardDescription>
@@ -170,84 +196,210 @@ export function EditComprobanteForm({ comprobanteId }: EditComprobanteFormProps)
             </CardAction>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-2 gap-6">
-              {/* Columna 1 */}
-              <div className="grid gap-2">
-                <Label htmlFor="codigo_comprobante">Código Factura/Ref</Label>
-                <Input
-                  id="codigo_comprobante"
-                  type="text"
-                  placeholder="Ingrese el código de la comprobante"
-                  value={formData.codigo_comprobante}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="fecha">Fecha</Label>
-                <Input
-                  id="fecha"
-                  type="date"
-                  value={formData.fecha}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="descripcion">Descripcion</Label>
-                <Input
-                  id="descripcion"
-                  type="text"
-                  placeholder="Ingrese la descripcion del comprobante"
-                  value={formData.descripcion}
-                  onChange={handleInputChange}
-                  required
-                />
+            <div className="grid grid-cols-1 gap-8">
+              {/* Sección: Información General */}
+              <div>
+                <h3 className="text-lg font-semibold mb-4">Información General</h3>
+                <div className="grid grid-cols-3 gap-4">
+                  {/* Código Comprobante */}
+                  <div className="grid gap-2">
+                    <Label htmlFor="codigo_comprobante">Código Factura/Ref</Label>
+                    <Input
+                      id="codigo_comprobante"
+                      type="text"
+                      placeholder="Ingrese el código"
+                      value={formData.codigo_comprobante}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+
+                  {/* Fecha */}
+                  <div className="grid gap-2">
+                    <Label htmlFor="fecha">Fecha</Label>
+                    <Input
+                      id="fecha"
+                      type="date"
+                      value={formData.fecha}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+
+                  {/* Cliente */}
+                  <div className="grid gap-2">
+                    <Label htmlFor="id_cliente">Cliente</Label>
+                    <Select
+                      name="id_cliente"
+                      value={formData.id_cliente}
+                      onValueChange={(value) =>
+                        handleSelectChange("id_cliente", value)
+                      }
+                      required
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Seleccione un cliente" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Clientes</SelectLabel>
+                          {clientes.map((cliente) => (
+                            <SelectItem key={cliente.id} value={cliente.id}>
+                              {cliente.nombre} {cliente.apellido} - {cliente.razon_social}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  {/* Categoría */}
+                  <div className="grid gap-2">
+                    <Label htmlFor="id_categoria">Categoría</Label>
+                    <Select
+                      name="id_categoria"
+                      value={formData.id_categoria}
+                      onValueChange={(value) =>
+                        handleSelectChange("id_categoria", value)
+                      }
+                      required
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Seleccione una categoría" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Categorías</SelectLabel>
+                          {categorias.map((categoria) => (
+                            <SelectItem key={categoria.id} value={categoria.id}>
+                              {categoria.descripcion}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  {/* Tipo de Operación */}
+                  <div className="grid gap-2">
+                    <Label htmlFor="id_tipo_operacion">Tipo de Operación</Label>
+                    <Select
+                      name="id_tipo_operacion"
+                      value={formData.id_tipo_operacion}
+                      onValueChange={(value) =>
+                        handleSelectChange("id_tipo_operacion", value)
+                      }
+                      required
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Seleccione tipo de operación" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Tipos de Operación</SelectLabel>
+                          {tiposOperaciones.map((tipo) => (
+                            <SelectItem key={tipo.id} value={tipo.id}>
+                              {tipo.descripcion}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
               </div>
 
-              <div className="grid gap-2">
-                <Label htmlFor="id_categoria">Categoria</Label>
-                <Select
-                  name="id_categoria"
-                  value={formData.id_categoria}
-                  onValueChange={(value) =>
-                    handleSelectChange("id_categoria", value)
-                  }
-                  required
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Seleccione una categoria" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Categorías</SelectLabel>
-                      {categorias.map((categoria) => (
-                        <SelectItem key={categoria.id} value={categoria.id}>
-                          {categoria.descripcion}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </div>
+              {/* Sección: Impuestos y Montos */}
+              <div>
+                <h3 className="text-lg font-semibold mb-4">Impuestos y Montos</h3>
+                <div className="grid grid-cols-3 gap-4">
+                  {/* Gravado 15% */}
+                  <div className="grid gap-2">
+                    <Label htmlFor="gravado15">Gravado 15%</Label>
+                    <Input
+                      id="gravado15"
+                      type="number"
+                      step="0.01"
+                      value={formData.gravado15}
+                      onChange={handleInputChange}
+                    />
+                  </div>
 
-            
-              
-            
-              <div className="grid gap-2">
-           
-              <div className="grid gap-2">
-                <Label htmlFor="total">Total</Label>
-                <Input
-                  id="total"
-                  type="number"
-                  step="0.01"
-                  value={formData.total}
-                  onChange={handleInputChange}
-                  required
-                />
+                  {/* Impuesto 15% */}
+                  <div className="grid gap-2">
+                    <Label htmlFor="impuesto15">Impuesto 15%</Label>
+                    <Input
+                      id="impuesto15"
+                      type="number"
+                      step="0.01"
+                      value={formData.impuesto15}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+
+                  {/* Gravado 18% */}
+                  <div className="grid gap-2">
+                    <Label htmlFor="gravado18">Gravado 18%</Label>
+                    <Input
+                      id="gravado18"
+                      type="number"
+                      step="0.01"
+                      value={formData.gravado18}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+
+                  {/* Impuesto 18% */}
+                  <div className="grid gap-2">
+                    <Label htmlFor="impuesto18">Impuesto 18%</Label>
+                    <Input
+                      id="impuesto18"
+                      type="number"
+                      step="0.01"
+                      value={formData.impuesto18}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+
+                  {/* Exento */}
+                  <div className="grid gap-2">
+                    <Label htmlFor="exento">Exento</Label>
+                    <Input
+                      id="exento"
+                      type="number"
+                      step="0.01"
+                      value={formData.exento}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+
+                  {/* Descuentos */}
+                  <div className="grid gap-2">
+                    <Label htmlFor="descuentos">Descuentos</Label>
+                    <Input
+                      id="descuentos"
+                      type="number"
+                      step="0.01"
+                      value={formData.descuentos}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+
+                  {/* Total */}
+                  <div className="grid gap-2">
+                    <Label htmlFor="total" className="font-bold">Total</Label>
+                    <Input
+                      id="total"
+                      type="number"
+                      step="0.01"
+                      value={formData.total}
+                      onChange={handleInputChange}
+                      required
+                      className="font-bold"
+                    />
+                  </div>
+                </div>
               </div>
-            </div>
             </div>
           </CardContent>
           <CardFooter className="flex-col gap-2">

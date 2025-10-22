@@ -24,4 +24,9 @@ export * from './empleados/EmpleadosPage';
 export * from './empleados/EditEmpleadoPage';
 export * from './empleados/NewEmpleadoPage';
 
+export * from './comprobantes/ComprobantePage';
+export * from './comprobantes/EditComprobantePage';
+
+export * from './ventas/VentasPage';
+
 

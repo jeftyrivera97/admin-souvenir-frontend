@@ -60,3 +60,6 @@ export * from './dashboard/shared/charts/MonthTiposPieChartComponent';
 export * from './dashboard/home/IndexHomePageComponent';
 export * from './dashboard/home/IndexAdminHomePageComponent';
 export * from './dashboard/home/PieCharDistributionComponent';
+
+export * from './dashboard/ventas/IndexVentaDataTable';
+export * from './dashboard/ventas/IndexVentaStatisticsComponent';

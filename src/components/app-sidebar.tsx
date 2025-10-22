@@ -10,6 +10,8 @@ import {
   IconUserCircle,
   IconUserCog,
   IconCash,
+  IconReceipt,
+  IconReceipt2,
 } from "@tabler/icons-react";
 
 import { NavMain } from "@/components/nav-main";
@@ -36,6 +38,16 @@ const navMain = [
     title: "Ingresos",
     url: "/ingresos",
     icon: IconCash,
+  },
+   {
+    title: "Comprobantes",
+    url: "/comprobantes",
+    icon: IconReceipt,
+  },
+     {
+    title: "Ventas",
+    url: "/ventas",
+    icon: IconReceipt2,
   },
   {
     title: "Compras",

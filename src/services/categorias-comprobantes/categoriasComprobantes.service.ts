@@ -16,7 +16,7 @@ export class CategoriasComprobantesService {
     try {
       console.log(`📄 Obteniendo categorías de comporbantes - Página: ${page}, Límite: ${limit}`);
 
-      const response = await api.get<CategoriaComprobanteType>("/categorias/comporbantes", {
+      const response = await api.get<CategoriaComprobanteType>("/categorias/comprobantes", {
         params: { page, limit },
       });
 
@@ -41,7 +41,7 @@ export class CategoriasComprobantesService {
     try {
       console.log(`🔍 Buscando categorías de comporbantes con término: "${searchTerm}"`);
 
-      const response = await api.get<CategoriaComprobanteType>(`/categorias/comporbantes`, {
+      const response = await api.get<CategoriaComprobanteType>(`/categorias/comprobantes`, {
         params: {
           search: searchTerm,
           page,
@@ -66,7 +66,7 @@ export class CategoriasComprobantesService {
     try {
       console.log(`🆔 Obteniendo categoría de comporbante por ID: ${id}`);
 
-      const response = await api.get<{ data: CategoriaComprobanteData }>(`/categorias/comporbantes/${id}`);
+      const response = await api.get<{ data: CategoriaComprobanteData }>(`/categorias/comprobantes/${id}`);
 
       console.log("✅ Categoría de comporbante obtenida:", response.data);
       return response.data;

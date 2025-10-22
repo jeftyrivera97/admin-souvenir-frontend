@@ -1,7 +1,6 @@
 import api from "@/api/api";
 import type { VentaType, VentaData } from "@/interfaces/Venta";
 
-
 /**
  * Servicio para manejar todas las operaciones relacionadas con ventas
  */
@@ -11,13 +10,14 @@ export class VentasService {
    */
   static getVentas = async (
     page: number = 1,
-    limit: number = 10
+    limit: number = 10,
+    month: string = "",
   ): Promise<VentaType> => {
     try {
-      console.log(`📄 Obteniendo ventas - Página: ${page}, Límite: ${limit}`);
+      console.log(`📄 Obteniendo ventas - Página: ${page}, Límite: ${limit}, Mes: ${month}`);
 
       const response = await api.get<VentaType>("/ventas", {
-        params: { page, limit },
+        params: { page, limit, month },
       });
 
       console.log("✅ Ventas obtenidas:", response.data.data.length, "registros");
@@ -25,7 +25,7 @@ export class VentasService {
 
       return response.data;
     } catch (error) {
-      console.error("❌ Error al obtener ventas:", error);
+      console.error("❌ Error al obtener ingresos:", error);
       throw error;
     }
   };
@@ -36,7 +36,8 @@ export class VentasService {
   static searchVentas = async (
     searchTerm: string,
     page: number = 1,
-    limit: number = 10
+    limit: number = 10,
+     month: string = "",
   ): Promise<VentaType> => {
     try {
       console.log(`🔍 Buscando ventas con término: "${searchTerm}"`);
@@ -46,6 +47,7 @@ export class VentasService {
           search: searchTerm,
           page,
           limit,
+          month,
         },
       });
 

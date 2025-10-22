@@ -2,7 +2,6 @@ import {
   IndexComprobantesStatisticsComponent,
   IndexComprobantesDataTable,
   MonthDateInput,
-  NewItemButton,
 } from "@/components";
 import { useEffect } from "react";
 import useComprobanteStore from "@/store/comprobante";
@@ -43,18 +42,12 @@ export const ComprobantesPage = () => {
   const isPrivileged = role === "1" || role === "2";
 
   const renderControls = () => (
-    <div className="grid grid-cols-3 grid-rows-1 gap-4">
+    <div className="grid grid-cols-1 grid-rows-1 gap-4">
       <div>
         <MonthDateInput
           selectedMonth={selectedMonth}
           onMonthChange={handleMonthChange}
         />
-      </div>
-
-      <div />
-
-      <div>
-        <NewItemButton placeholder="Nuevo Comprobante" href="/comprobantes/new" />
       </div>
     </div>
   );

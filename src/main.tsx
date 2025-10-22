@@ -12,7 +12,7 @@ import App from "./App.tsx";
 import { LoginPage } from "./auth/index.ts";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 
-import { ComprasPage, IngresosPage, NewIngresoPage, EditIngresoPage, EmpleadosPage, GastosPage, PlanillasPage, ProveedoresPage, HomePage, NewGastoPage, EditGastoPage, NewCompraPage, EditCompraPage, NewPlanillaPage, EditPlanillaPage, NewEmpleadoPage, EditEmpleadoPage, NewProveedorPage, EditProveedorPage } from "./pages/index.ts";
+import { ComprasPage, IngresosPage, NewIngresoPage, EditIngresoPage, EmpleadosPage, GastosPage, PlanillasPage, ProveedoresPage, HomePage, NewGastoPage, EditGastoPage, NewCompraPage, EditCompraPage, NewPlanillaPage, EditPlanillaPage, NewEmpleadoPage, EditEmpleadoPage, NewProveedorPage, EditProveedorPage, ComprobantesPage, EditComprobantePage, VentasPage } from "./pages/index.ts";
 
 
 
@@ -64,7 +64,11 @@ createRoot(document.getElementById("root")!).render(
           <Route path="proveedores/new" element={<NewProveedorPage />} />
           <Route path="proveedores/:id/edit" element={<EditProveedorPage />} />
 
-     
+          <Route path="comprobantes" element={<ComprobantesPage />} />
+          <Route path="comprobantes/:id/edit" element={<EditComprobantePage />} />
+
+          <Route path="ventas" element={<VentasPage />} />
+
           {/* Las otras rutas */}
         
         </Route>
